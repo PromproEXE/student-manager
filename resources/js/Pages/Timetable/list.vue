@@ -1,0 +1,41 @@
+<script setup>
+import AppLayout from '../../Layouts/AppLayout.vue';
+</script>
+<script>
+export default {
+    data() {
+        return {
+            time: ['08.10 - 09.00', '09.00 - 09.50', '09.50 - 10.40', '10.40 - 11.30', '11.30 - 12.20', '12.20 - 13.10', '13.10 - 14.00', '14.00 - 14.50', '14.50 - 15.40', '15.40 - 16.30'],
+            days: ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัส', 'ศุกร์']
+        }
+    },
+    methods: {
+
+    }
+}
+</script>
+<template>
+    <AppLayout>
+        <template #header>ตารางเรียน</template>
+        <div class="rounded-xl bg-white p-5">
+            <div class="grid grid-cols-11">
+                <div class="bg-gray-300 text-center font-bold p-3 text-xl border border-neutral"></div>
+                <div class="col-span-10 grid grid-cols-10">
+                    <p class="bg-gray-300 text-center font-bold px-3 py-2 text-xl border border-neutral" v-for="n in 10"
+                        :key="n">คาบที่ {{ n
+                        }}</p>
+                    <p class="bg-gray-100 text-center px-1 py-2 text-sm border border-neutral" v-for="n in time"
+                        :key="n">{{ n }}</p>
+                </div>
+                <template v-for="day in days" :key="day">
+                    <div>
+                        <p class="text-center py-5 border border-neutral">{{ day }}</p>
+                    </div>
+                    <div class="col-span-10 grid grid-cols-10">
+                        <p class="text-center py-5 border border-neutral" v-for="n in 10" :key="n">คอมพิวเตอร์</p>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </AppLayout>
+</template>

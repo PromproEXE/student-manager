@@ -24,13 +24,13 @@ module.exports = {
                 mytheme: {
                     primary: "#b18ae3",
 
-                    secondary: "#D4BBEC",
+                    secondary: "#e9d5ff",
 
                     accent: "#1FB2A6",
 
                     neutral: "#191D24",
 
-                    "base-100": "#2A303C",
+                    "base-100": "#FFFFFF",
 
                     info: "#3ABFF8",
 
@@ -42,6 +42,7 @@ module.exports = {
                 },
             },
         ],
+        darkTheme: "light",
     },
     plugins: [
         require("@tailwindcss/forms"),

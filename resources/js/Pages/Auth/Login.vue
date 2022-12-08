@@ -69,9 +69,11 @@ const submit = () => {
                 Forgot your password?
                 </Link>
 
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
+                <a :href="route('register')" role="button" class="btn btn-outline btn-neutral ml-4"
+                    :class="{ 'opacity-25': form.processing }">Register</a>
+
+                <button class="btn btn-primary ml-4" :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing">Log in</button>
             </div>
         </form>
     </AuthenticationCard>

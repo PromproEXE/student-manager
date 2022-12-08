@@ -1,0 +1,136 @@
+<script setup>
+import AppLayout from '@/Layouts/AppLayout.vue'
+import Chart from 'chart.js/auto';
+</script>
+<script>
+export default {
+    data() {
+        return {
+
+        }
+    },
+    methods: {
+        initChart() {
+            const labels1 = [
+                'มกราคม',
+                'กุมภาพันธ์',
+                'มีนาคม',
+                'เมษายน',
+                'พฤษภาคม',
+                'มิถุนายน',
+                'กรกฎาคม',
+                'สิงหาคม',
+                'กันยายน',
+                'ตุลาคม',
+                'พฤศจิกายน',
+                'ธันวาคม',
+            ];
+            const data1 = {
+                labels: labels1,
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const config1 = {
+                type: 'bar',
+                data: data1,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                },
+            };
+
+            new Chart(document.getElementById('chart'), config1)
+
+            const labels2 = [
+                'ภาษาไทย',
+                'ภาษาอังกฤษ',
+                'คณิตศาสตร์',
+                'คอมพิวเตอร์',
+                'วิทยาศาสตร์',
+            ];
+            const data2 = {
+                labels: labels2,
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: [65, 59, 80, 81, 56],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const config2 = {
+                type: 'bar',
+                data: data2,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                },
+            };
+            new Chart(document.getElementById('chart2'), config2)
+        },
+    },
+    mounted() {
+        this.initChart()
+    }
+}
+</script>
+<template>
+    <AppLayout>
+        <template #header>ประวัติการมาโรงเรียน</template>
+        <div class="grid grid-cols-2 gap-5 bg-white rounded-xl p-5">
+            <div>
+                <p class="text-2xl text-primary font-bold">สถิติการมาเรียนแต่ละเดือน</p>
+                <div style="height:300px">
+                    <canvas id="chart"></canvas>
+                </div>
+            </div>
+            <div>
+                <p class="text-2xl text-primary font-bold">สถิติการเข้าเรียนแต่ละรายวิชา</p>
+                <div style="height:300px">
+                    <canvas id="chart2"></canvas>
+                </div>
+            </div>
+        </div>
+    </AppLayout>
+</template>

@@ -21,6 +21,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "chart.js": "^4.0.1",
         "daisyui": "^2.42.1"
     }
 }
