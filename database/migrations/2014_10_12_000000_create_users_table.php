@@ -15,13 +15,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('std_id')->nullable();
             $table->string('name');
+            $table->string('class')->nullable();
+            $table->string('room')->nullable();
+            $table->json('data')->nullable();
+            $table->string('birth_day')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('student')->default(true);
+            $table->boolean('teacher')->default(false);
             $table->boolean('admin')->default(false);
-            $table->boolean('super_admin')->default(false);
+            $table->boolean('system')->default(false);
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

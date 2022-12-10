@@ -122,7 +122,7 @@ export default {
         <template #header>หน้าหลัก</template>
         <div class="overflow-auto" style="max-height: calc(100vh - 140px)">
             <div class="bg-white rounded-xl text-neutral p-5 mb-5">
-                <div class="flex items-center mb-5 justify-between">
+                <div class="flex items-center justify-between" :class="{ 'mb-5': $page.props.user.student }">
                     <div class="flex items-center">
                         <div></div>
                         <img src="/img/account.png" class="mr-5" style="width: 100px" alt="">
@@ -130,15 +130,21 @@ export default {
                             <p class="text-4xl font-bold text-primary">{{ $page.props.user.name }}</p>
                             <p class="text-xl text-gray-400">{{
                                     $page.props.user.student ? 'นักเรียน' : ''
-                            }} {{ $page.props.user.admin ? '/ แอดมิน' : '' }}
+                            }} {{ $page.props.user.teacher ? 'อาจารย์' : '' }}
                                 {{
-                                        $page.props.user.super_admin ? '/ ผู้ดูแลระบบ' : ''
-                                }}</p>
+                                        $page.props.user.admin ? 'ผู้ดูแล' : ''
+                                }} {{
+        $page.props.user.system ? 'ผู้ดูแลระบบ' : ''
+}}</p>
                         </div>
                     </div>
-                    <div>
+                    <div v-if="$page.props.user.student">
                         <button class="btn btn-warning text-lg mr-5">แจ้งลา</button>
                         <button class="btn btn-success text-lg">การบ้าน</button>
+                    </div>
+                    <div v-if="$page.props.user.teacher">
+                        <button class="btn btn-warning text-lg mr-5">ยืนยันคำขอการลา</button>
+                        <button class="btn btn-success text-lg">เพิ่มการบ้าน</button>
                     </div>
                 </div>
 
@@ -177,9 +183,63 @@ export default {
                     </div>
                 </template>
             </div>
-            <template v-if="$page.props.user.admin">
-                <div class="rounded-xl bg-white p-5">
 
+            <template v-if="$page.props.user.teacher">
+                <div class="rounded-xl bg-white p-5">
+                    <div class="grid grid-cols-2 gap-5">
+                        <div>
+                            <p class="text-2xl font-bold">สถิติการมาเรียนของนักเรียนทั้งหมดในแต่ละเดือน</p>
+                            <div style="height:300px">
+                                <canvas id="chart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold">สถิติการเข้าเรียนแต่ละรายวิชา</p>
+                            <div style="height:300px">
+                                <canvas id="chart2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <template v-if="$page.props.user.admin">
+                <div class="rounded-xl bg-white p-5 mb-5 grid grid-cols-3 gap-5">
+                    <div class="bg-sky-200 text-sky-600 rounded-lg p-3 px-5">
+                        <p class="text-xl font-bold mb-3">จำนวนนักเรียนทั้งหมด</p>
+                        <p class="text-4xl font-bold">2,500 คน</p>
+                    </div>
+                    <div class="bg-amber-200 text-amber-600 rounded-lg p-3 px-5">
+                        <p class="text-xl font-bold mb-3">จำนวนอาจารย์ทั้งหมด</p>
+                        <p class="text-4xl font-bold">100 คน</p>
+                    </div>
+                    <div class="bg-pink-200 text-pink-600 rounded-lg p-3 px-5">
+                        <p class="text-xl font-bold mb-3">จำนวนเจ้าหน้าที่</p>
+                        <p class="text-4xl font-bold">5 คน</p>
+                    </div>
+                </div>
+                <div class="rounded-xl bg-white p-5">
+                    <p class="font-bold text-4xl mb-3">เมนูลัด</p>
+                    <div class="grid grid-cols-3 gap-5">
+                        <button class="btn btn-secondary block h-fit py-5">
+                            <span class="material-symbols-rounded" style="font-size: 5rem;">
+                                person
+                            </span>
+                            <p class="text-2xl">จัดการนักเรียน</p>
+                        </button>
+                        <button class="btn btn-secondary block h-fit py-5">
+                            <span class="material-symbols-rounded" style="font-size: 5rem;">
+                                manage_accounts
+                            </span>
+                            <p class="text-2xl">จัดการอาจารย์</p>
+                        </button>
+                        <button class="btn btn-secondary block h-fit py-5">
+                            <span class="material-symbols-rounded" style="font-size: 5rem;">
+                                school
+                            </span>
+                            <p class="text-2xl">จัดการห้องเรียน</p>
+                        </button>
+                    </div>
                 </div>
             </template>
         </div>

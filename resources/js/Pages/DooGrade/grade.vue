@@ -42,7 +42,8 @@ export default {
     <AppLayout>
         <template #header>ดูเกรด</template>
         <div class="rounded-xl bg-white p-5" style="height: calc(100vh - 140px)">
-            <form action="http://dograde.online/kpn/default.aspx" method="POST" target="grade_iframe" id="myAnchor">
+            <form class="hidden" action="http://dograde.online/kpn/default.aspx" method="POST" target="grade_iframe"
+                id="myAnchor">
                 <input type="text" name="TxtUser" id="TxtUser" value="09362">
                 <input type="text" name="txtPassword" id="txtPassword" value="27/02/2548">
                 <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="BD62C3F6">
@@ -54,7 +55,8 @@ export default {
 
                 <button type="submit">submit</button>
             </form>
-            <iframe name="grade_iframe" style="height: calc(100vh - 225px)" class="w-full" frameborder="0"></iframe>
+            <iframe name="grade_iframe" src="http://dograde.online/kpn/default.aspx" style="height: calc(100vh - 225px)"
+                class="w-full" frameborder="0"></iframe>
         </div>
     </AppLayout>
 </template>

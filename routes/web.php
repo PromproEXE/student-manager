@@ -36,4 +36,6 @@ Route::middleware([
     Route::prefix('timetable')->group(base_path('routes/frontend/timetable.php'));
     Route::prefix('grade')->group(base_path('routes/frontend/dooGrade.php'));
     Route::prefix('missing-items')->group(base_path('routes/frontend/missing-items.php'));
+    Route::prefix('users')->group(base_path('routes/frontend/users.php'));
+    Route::prefix('class')->group(base_path('routes/frontend/class.php'));
 });

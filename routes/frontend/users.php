@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AbsentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,8 +16,9 @@ use Inertia\Inertia;
 |
 */
 
-Route::controller(AbsentController::class)
+Route::controller(UserController::class)
     ->group(function () {
-        Route::inertia('/', 'Missing-items/list')->name('missing_items_list_view');
-        Route::inertia('/edit', 'Missing-items/edit')->name('missing_items_edit_view');
+        Route::inertia('/student', 'Users/student_list')->name('users_student_list_view');
+        Route::inertia('/teacher', 'Users/teacher_list')->name('users_teacher_list_view');
+        Route::inertia('/officer', 'Users/officer_list')->name('users_officer_list_view');
     });

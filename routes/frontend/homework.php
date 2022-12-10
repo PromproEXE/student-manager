@@ -21,4 +21,10 @@ Route::controller(HomeworkController::class)
         Route::inertia('/', 'Homework/list')->name('homework_list_view');
         Route::inertia('/classroom', 'Homework/classroom')->name('homework_classroom_view');
         Route::inertia('/classroom/task/', 'Homework/task')->name('homework_task_view');
+
+        Route::middleware('auth:sanctum')
+            ->group(function () {
+                Route::inertia('/edit', 'Homework/edit')->name('homework_edit_view');
+                Route::inertia('/edit-annouce', 'Homework/edit_annouce')->name('homework_edit_annouce_view');
+            });
     });

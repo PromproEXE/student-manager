@@ -39,11 +39,16 @@ import AppLayout from '../../Layouts/AppLayout.vue';
                 </div>
                 <div class="col-span-2 rounded-xl p-5 bg-white">
                     <p class="font-bold mb-3">คอมเมนต์ของงานนี้</p>
-                    <input type="text" class="input input-bordered w-full" placeholder="เขียนคอมเมนต์ที่นี่">
+                    <div class="grid grid-cols-5 gap-5">
+                        <textarea type="text" class="input input-bordered col-span-4 w-full"
+                            placeholder="เขียนคอมเมนต์ที่นี่"></textarea>
+                        <button class="btn btn-primary">คอมเมนต์</button>
+                    </div>
                 </div>
                 <div class="rounded-xl p-5 bg-white">
                     <p class="font-bold mb-3">คอมเมนต์ส่วนตัว</p>
-                    <input type="text" class="input input-bordered w-full" placeholder="เขียนคอมเมนต์ที่นี่">
+                    <input type="text" class="input input-bordered w-full mb-3" placeholder="เขียนคอมเมนต์ที่นี่">
+                    <button class="btn btn-secondary w-full">คอมเมนต์</button>
                 </div>
             </div>
         </div>

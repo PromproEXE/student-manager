@@ -9,12 +9,20 @@ import AppLayout from '../../Layouts/AppLayout.vue';
                 <p class="text-4xl font-bold">คอมพิวเตอร์</p>
             </div>
             <div class="grid grid-cols-4 gap-5">
-                <div class="bg-white rounded-xl p-5 h-fit border">
+                <div class="bg-white rounded-xl p-5 h-fit border" v-if="$page.props.user.student">
                     <p class="font-bold mb-3">งานที่จะต้องส่ง</p>
                     <p class="text-gray-400 mb-3 text-center">ดีใจด้วย! คุณไม่มีงานที่จะต้องส่ง</p>
                     <div class="text-right">
                         <button class="btn btn-sm btn-ghost">ดูทั้งหมด</button>
                     </div>
+                </div>
+                <div class="bg-white rounded-xl p-5 h-fit border" v-if="$page.props.user.teacher">
+                    <p class="font-bold mb-3">แท็บด่วน</p>
+                    <a :href="route('homework_edit_view')" role="button"
+                        class="btn btn-success w-full mb-3">เพิ่มการบ้าน</a>
+                    <a :href="route('homework_edit_annouce_view')" role="button"
+                        class="btn btn-warning w-full">เพิ่มประกาศ</a>
+
                 </div>
                 <div class="col-span-3">
                     <a :href="route('homework_task_view')">

@@ -118,18 +118,71 @@ export default {
 <template>
     <AppLayout>
         <template #header>ประวัติการมาโรงเรียน</template>
-        <div class="grid grid-cols-2 gap-5 bg-white rounded-xl p-5">
+        <div class="grid grid-cols-2 gap-5 bg-white rounded-xl p-5" v-if="$page.props.user.student">
             <div>
-                <p class="text-2xl text-primary font-bold">สถิติการมาเรียนแต่ละเดือน</p>
+                <p class="text-2xl text-primary font-bold mb-3">สถิติการมาเรียนในแต่ละเดือน</p>
                 <div style="height:300px">
                     <canvas id="chart"></canvas>
                 </div>
             </div>
             <div>
-                <p class="text-2xl text-primary font-bold">สถิติการเข้าเรียนแต่ละรายวิชา</p>
+                <p class="text-2xl text-primary font-bold">สถิติการมาเรียนในแต่ละรายวิชา</p>
                 <div style="height:300px">
                     <canvas id="chart2"></canvas>
                 </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-5 bg-white rounded-xl p-5" v-if="$page.props.user.teacher">
+            <div>
+                <p class="text-2xl text-primary font-bold mb-3">สถิติการมาเรียนของนักเรียนในห้อง</p>
+                <div class="grid grid-cols-5 items-center mb-3">
+                    <label for="" class="mr-3">ชื่อนักเรียน: </label>
+                    <select class="select select-bordered w-full col-span-4">
+                        <option>ชาญวิช มาศมัณฑนะ</option>
+                        <option>รักษิต รุ่งรัตนไชย</option>
+                        <option>เกียรติศักดิ์ มากมีทรัพย์</option>
+                    </select>
+                </div>
+                <div style="height:300px">
+                    <canvas id="chart"></canvas>
+                </div>
+            </div>
+            <div>
+                <p class="text-2xl text-primary font-bold">สถิติการมาเรียนของทั้งห้อง</p>
+                <div style="height:300px">
+                    <canvas id="chart2"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl p-5" v-if="$page.props.user.admin">
+            <p class="text-2xl text-primary font-bold mb-3">สถิติการมาเรียนของนักเรียนในห้อง</p>
+            <div class="flex">
+                <div class="mr-3">
+                    <label for="" class="mr-2">ระดับชั้น: </label>
+                    <select class="select select-bordered">
+                        <option>ทั้งหมด</option>
+                        <option v-for="n in 6" :key="n">ม.{{ n }}</option>
+                    </select>
+                </div>
+                <div class="mr-3">
+                    <label for="" class="mr-2">ห้อง: </label>
+                    <select class="select select-bordered">
+                        <option>ทั้งหมด</option>
+                        <option v-for="n in 6" :key="n">ม.{{ n }}</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="" class="mr-2">ชื่อนักเรียน: </label>
+                    <select class="select select-bordered">
+                        <option>ทั้งหมด</option>
+                        <option>ชาญวิช มาศมัณฑนะ</option>
+                        <option>รักษิต รุ่งรัตนไชย</option>
+                        <option>เกียรติศักดิ์ มากมีทรัพย์</option>
+                    </select>
+                </div>
+            </div>
+            <div style="height:400px;" class="flex justify-center">
+                <canvas id="chart"></canvas>
             </div>
         </div>
     </AppLayout>
