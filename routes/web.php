@@ -32,7 +32,7 @@ Route::middleware([
     Route::inertia('/', 'index')->name('index');
     Route::prefix('absent')->group(base_path('routes/frontend/absent.php'));
     Route::prefix('coming-history')->group(base_path('routes/frontend/coming-history.php'));
-    Route::prefix('homework')->group(base_path('routes/frontend/homework.php'));
+    Route::prefix('classroom')->group(base_path('routes/frontend/classroom.php'));
     Route::prefix('timetable')->group(base_path('routes/frontend/timetable.php'));
     Route::prefix('grade')->group(base_path('routes/frontend/dooGrade.php'));
     Route::prefix('missing-items')->group(base_path('routes/frontend/missing-items.php'));

@@ -35,7 +35,10 @@ export default {
                     <label for="" class="mr-2">กลุ่มสาระ</label>
                     <select class="select select-bordered">
                         <option>ทั้งหมด</option>
-                        <option v-for="n in 6" :key="n">ม.{{ n }}</option>
+                        <option>กลุ่มสาระคณิตศาสตร์</option>
+                        <option>กลุ่มสาระภาษาไทย</option>
+                        <option>กลุ่มสาระภาษาต่างประเทศ</option>
+                        <option>กลุ่มสาระวิทยาศาสตร์</option>
                     </select>
                 </div>
             </div>

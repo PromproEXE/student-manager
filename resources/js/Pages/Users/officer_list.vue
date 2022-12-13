@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
+import { Head } from '@inertiajs/inertia-vue3';
 </script>
 <script>
 export default {
@@ -31,6 +32,8 @@ export default {
 }
 </script>
 <template>
+
+    <Head title="จัดการเจ้าหน้าที่"></Head>
     <AppLayout>
         <template #header>จัดการเจ้าหน้าที่</template>
         <div class="bg-white rounded-xl p-5" v-if="$page.props.user.admin">

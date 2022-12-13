@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
+import { Head } from '@inertiajs/inertia-vue3';
 import axios from 'axios';
 </script>
 <script>
@@ -39,6 +40,8 @@ export default {
 }
 </script>
 <template>
+
+    <Head title="ดูเกรด"></Head>
     <AppLayout>
         <template #header>ดูเกรด</template>
         <div class="rounded-xl bg-white p-5" style="height: calc(100vh - 140px)">

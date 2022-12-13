@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import * as role from '@/role'
 </script>
 <script>
 export default {
@@ -13,10 +14,11 @@ export default {
 }
 </script>
 <template>
-    <AppLayout>
-        <template #header>แจ้งการลา</template>
+
+    <AppLayout title="แจ้งการลา">
+        <template #header>{{ !role.isAdmin($page.props.user.role) ? 'แจ้งการลา' : 'ประวัติการลา' }}</template>
         <div class="overflow-auto" style="max-height: calc(100vh - 140px)">
-            <form @submit.prevent="" v-if="$page.props.user.student">
+            <form @submit.prevent="" v-if="role.isStudent($page.props.user.role)">
                 <div class="grid grid-cols-3 gap-5 mb-5">
                     <div class="rounded-xl bg-white p-4">
                         <p class="text-primary text-2xl font-bold mb-3">เลือกวันลา</p>
@@ -44,7 +46,7 @@ export default {
             </form>
             <div class="bg-white p-4 rounded-xl mb-5">
                 <p class="text-2xl text-primary font-bold mb-5">คำขอการลา</p>
-                <div class="flex mb-5" v-if="$page.props.user.admin">
+                <div class="flex mb-5" v-if="role.isAdmin($page.props.user.role)">
                     <div class="mr-3">
                         <label for="" class="mr-2">ระดับชั้น:</label>
                         <select class="select select-bordered">
@@ -77,7 +79,7 @@ export default {
             </div>
             <div class="bg-white p-4 rounded-xl">
                 <p class="text-2xl text-primary font-bold mb-5">ประวัติการลา</p>
-                <div class="flex mb-5" v-if="$page.props.user.admin">
+                <div class="flex mb-5" v-if="role.isAdmin($page.props.user.role)">
                     <div class="mr-3">
                         <label for="" class="mr-2">ระดับชั้น:</label>
                         <select class="select select-bordered">

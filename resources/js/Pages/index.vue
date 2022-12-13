@@ -1,6 +1,8 @@
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue';
 import Chart from 'chart.js/auto';
+import { Head } from '@inertiajs/inertia-vue3';
+import * as role from '@/role'
 </script>
 
 <script>
@@ -118,37 +120,43 @@ export default {
 </script>
 
 <template>
+
+    <Head>
+        <title>หน้าหลัก</title>
+    </Head>
     <AppLayout>
         <template #header>หน้าหลัก</template>
         <div class="overflow-auto" style="max-height: calc(100vh - 140px)">
             <div class="bg-white rounded-xl text-neutral p-5 mb-5">
-                <div class="flex items-center justify-between" :class="{ 'mb-5': $page.props.user.student }">
+                <div class="flex items-center justify-between"
+                    :class="{ 'mb-5': role.isStudent($page.props.user.role) }">
                     <div class="flex items-center">
                         <div></div>
                         <img src="/img/account.png" class="mr-5" style="width: 100px" alt="">
                         <div>
                             <p class="text-4xl font-bold text-primary">{{ $page.props.user.name }}</p>
                             <p class="text-xl text-gray-400">{{
-                                    $page.props.user.student ? 'นักเรียน' : ''
-                            }} {{ $page.props.user.teacher ? 'อาจารย์' : '' }}
+                                    role.isStudent($page.props.user.role) ? 'นักเรียน' : ''
+                            }} {{ role.isTeacher($page.props.user.role) ? 'อาจารย์' : '' }}
                                 {{
-                                        $page.props.user.admin ? 'ผู้ดูแล' : ''
+                                        role.isAdmin($page.props.user.role) ? 'ผู้ดูแล' : ''
                                 }} {{
-        $page.props.user.system ? 'ผู้ดูแลระบบ' : ''
+        role.isSystem($page.props.user.role) ? 'ผู้ดูแลระบบ' : ''
 }}</p>
                         </div>
                     </div>
-                    <div v-if="$page.props.user.student">
-                        <button class="btn btn-warning text-lg mr-5">แจ้งลา</button>
-                        <button class="btn btn-success text-lg">การบ้าน</button>
+                    <div v-if="role.isStudent($page.props.user.role)">
+                        <a :href="route('absent_view')" role="button" class="btn btn-warning text-lg mr-5">แจ้งลา</a>
+                        <a role="button" class="btn btn-success text-lg">การบ้าน</a>
                     </div>
-                    <div v-if="$page.props.user.teacher">
-                        <button class="btn btn-warning text-lg mr-5">ยืนยันคำขอการลา</button>
-                        <button class="btn btn-success text-lg">เพิ่มการบ้าน</button>
+                    <div v-if="role.isTeacher($page.props.user.role)">
+                        <a :href="route('absent_view')" role="button"
+                            class="btn btn-warning text-lg mr-5">ยืนยันคำขอการลา</a>
+                        <a role="button" class="btn btn-success text-lg">เพิ่มการบ้าน</a>
                     </div>
                 </div>
 
-                <template v-if="$page.props.user.student">
+                <template v-if="role.isStudent($page.props.user.role)">
                     <div class="grid grid-cols-3 gap-5 mb-5">
                         <div class="bg-red-200 text-red-600 rounded-lg p-3 px-5">
                             <p class="text-xl font-bold mb-3">การบ้านที่ต้องส่งวันนี้
@@ -184,7 +192,7 @@ export default {
                 </template>
             </div>
 
-            <template v-if="$page.props.user.teacher">
+            <template v-if="role.isTeacher($page.props.user.role)">
                 <div class="rounded-xl bg-white p-5">
                     <div class="grid grid-cols-2 gap-5">
                         <div>
@@ -203,7 +211,7 @@ export default {
                 </div>
             </template>
 
-            <template v-if="$page.props.user.admin">
+            <template v-if="role.isAdmin($page.props.user.role)">
                 <div class="rounded-xl bg-white p-5 mb-5 grid grid-cols-3 gap-5">
                     <div class="bg-sky-200 text-sky-600 rounded-lg p-3 px-5">
                         <p class="text-xl font-bold mb-3">จำนวนนักเรียนทั้งหมด</p>
@@ -221,24 +229,27 @@ export default {
                 <div class="rounded-xl bg-white p-5">
                     <p class="font-bold text-4xl mb-3">เมนูลัด</p>
                     <div class="grid grid-cols-3 gap-5">
-                        <button class="btn btn-secondary block h-fit py-5">
+                        <a :href="route('users_student_list_view')" role="button"
+                            class="btn btn-secondary block h-fit py-5">
                             <span class="material-symbols-rounded" style="font-size: 5rem;">
                                 person
                             </span>
                             <p class="text-2xl">จัดการนักเรียน</p>
-                        </button>
-                        <button class="btn btn-secondary block h-fit py-5">
+                        </a>
+                        <a :href="route('users_teacher_list_view')" role="button"
+                            class="btn btn-secondary block h-fit py-5">
                             <span class="material-symbols-rounded" style="font-size: 5rem;">
                                 manage_accounts
                             </span>
                             <p class="text-2xl">จัดการอาจารย์</p>
-                        </button>
-                        <button class="btn btn-secondary block h-fit py-5">
+                        </a>
+                        <a :href="route('classroom_list_view')" role="button"
+                            class="btn btn-secondary block h-fit py-5">
                             <span class="material-symbols-rounded" style="font-size: 5rem;">
                                 school
                             </span>
                             <p class="text-2xl">จัดการห้องเรียน</p>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </template>

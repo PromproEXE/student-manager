@@ -4,7 +4,7 @@ import AppLayout from '../../Layouts/AppLayout.vue';
 <script></script>
 <template>
     <AppLayout>
-        <template #header>แจ้งของหาย</template>
+        <template #header>{{ !$page.props.user.admin ? 'แจ้งของหาย' : 'จัดการของหาย' }}</template>
         <div class="grid grid-cols-6 gap-5 mb-5">
             <div class="form-control"
                 :class="{ 'col-span-6': $page.props.user.student, 'col-span-5': !$page.props.user.student }">

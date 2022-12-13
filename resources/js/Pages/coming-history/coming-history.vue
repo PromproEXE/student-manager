@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Chart from 'chart.js/auto';
+import { Head } from '@inertiajs/inertia-vue3';
 </script>
 <script>
 export default {
@@ -116,6 +117,8 @@ export default {
 }
 </script>
 <template>
+
+    <Head title="ประวัติการมาโรงเรียน"></Head>
     <AppLayout>
         <template #header>ประวัติการมาโรงเรียน</template>
         <div class="grid grid-cols-2 gap-5 bg-white rounded-xl p-5" v-if="$page.props.user.student">

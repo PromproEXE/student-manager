@@ -20,7 +20,8 @@ export default {
         <div class="rounded-xl bg-white p-5" v-if="$page.props.user.student || $page.props.user.teacher">
             <div class="flex justify-between items-center mb-5">
                 <p class="text-4xl text-primary font-bold">ตารางเรียนห้องม.6/3</p>
-                <button class="btn btn-success text-lg"><span class="material-symbols-rounded mr-3">
+                <button class="btn btn-success text-lg" v-if="!$page.props.user.student"><span
+                        class="material-symbols-rounded mr-3">
                         edit
                     </span>แก้ไขตารางเรียน</button>
             </div>

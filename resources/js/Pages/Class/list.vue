@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
+import { Head } from '@inertiajs/inertia-vue3';
 </script>
 <script>
 export default {
@@ -31,8 +32,10 @@ export default {
 }
 </script>
 <template>
+
+    <head title="ห้องเรียน"></head>
     <AppLayout>
-        <template #header>จัดการนักเรียน</template>
+        <template #header>จัดการห้องเรียน</template>
         <div class="bg-white rounded-xl p-5" v-if="$page.props.user.admin">
             <div class="form-control mb-3">
                 <label class="input-group">

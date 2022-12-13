@@ -18,14 +18,14 @@ import AppLayout from '../../Layouts/AppLayout.vue';
                 </div>
                 <div class="bg-white rounded-xl p-5 h-fit border" v-if="$page.props.user.teacher">
                     <p class="font-bold mb-3">แท็บด่วน</p>
-                    <a :href="route('homework_edit_view')" role="button"
+                    <a :href="route('classroom_edit_view')" role="button"
                         class="btn btn-success w-full mb-3">เพิ่มการบ้าน</a>
-                    <a :href="route('homework_edit_annouce_view')" role="button"
+                    <a :href="route('classroom_edit_annouce_view')" role="button"
                         class="btn btn-warning w-full">เพิ่มประกาศ</a>
 
                 </div>
                 <div class="col-span-3">
-                    <a :href="route('homework_task_view')">
+                    <a :href="route('classroom_task_view')">
                         <div class="rounded-lg bg-white items-center border flex px-5 py-4 hover:bg-gray-50 hover:cursor-pointer mb-5"
                             v-for="n in 10" :key="n">
                             <span class="material-symbols-rounded text-5xl">
