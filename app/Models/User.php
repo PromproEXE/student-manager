@@ -24,10 +24,18 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
+        'std_id',
         'name',
+        'class',
+        'room',
+        'data',
+        'birth_day',
         'email',
         'password',
-        'role'
+        'role',
+        'classroom',
+        'attend_history',
+        'absent'
     ];
 
     /**
@@ -48,6 +56,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
+        'role' => 'array',
+        'classroom' => 'array',
+        'attend_history' => 'array',
+        'absent' => 'array',
         'email_verified_at' => 'datetime',
     ];
 

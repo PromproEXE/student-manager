@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('absents', function (Blueprint $table) {
             $table->id();
+            $table->string('user_id');
+            $table->string('type');
+            $table->text('details');
+            $table->boolean('approve');
+            $table->string('created_by');
             $table->timestamps();
         });
     }
