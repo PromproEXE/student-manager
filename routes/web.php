@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,9 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    // Route::get('/me', function (Request $request) {
+    //     return $request->user();
+    // });
     Route::inertia('/', 'index')->name('index');
     Route::prefix('absent')->group(base_path('routes/frontend/absent.php'));
     Route::prefix('coming-history')->group(base_path('routes/frontend/coming-history.php'));

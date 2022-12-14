@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('user_id');
             $table->string('type');
+            $table->timestamp('from');
+            $table->timestamp('to');
             $table->text('details');
-            $table->boolean('approve');
+            $table->boolean('approve')->nullable();
             $table->string('created_by');
             $table->timestamps();
         });
