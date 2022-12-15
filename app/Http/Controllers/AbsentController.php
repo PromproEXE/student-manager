@@ -16,7 +16,7 @@ class AbsentController extends Controller
         try {
             return Absent::all();
         } catch (Exception $err) {
-            return response(['err' => $err], 403);
+            return response($err, 403);
         }
     }
 
@@ -25,7 +25,7 @@ class AbsentController extends Controller
         try {
             return Absent::where('id', $id)->get();
         } catch (Exception $err) {
-            return response(['err' => $err], 403);
+            return response($err, 403);
         }
     }
 

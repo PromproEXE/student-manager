@@ -194,9 +194,54 @@ export default {
                     </template>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl">
+
+            <!-- ABSENT HISTORY FOR STUDENT -->
+            <div class="bg-white p-4 rounded-xl" v-if="role.isStudent($page.props.user.role)">
                 <p class="text-2xl text-primary font-bold mb-5">ประวัติการลา</p>
-                <div class="flex mb-5" v-if="role.isAdmin($page.props.user.role)">
+                <div class="flex mb-5">
+                    <div class="text-center my-8">
+                        <template v-if="data.length == 0">
+                            <p class="text-6xl text-gray-400 mb-3">¯\_(ツ)_/¯</p>
+                            <p class="text-xl">คุณไม่มีประวัติการลา</p>
+                            <p class="text-gray-400">พยายามอย่าให้มีวันลาล่ะ</p>
+                        </template>
+                        <template v-else>
+                            <table class="table table-zebra w-full">
+                                <!-- head -->
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ประเภทการลา</th>
+                                        <th>สาเหตุการลา</th>
+                                        <th>เริ่มต้น</th>
+                                        <th>สิ้นสุด</th>
+                                        <th>อนุมัติ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(absent, i) in data" :key="absent.id" class="hover">
+                                        <th>{{ i + 1 }}</th>
+                                        <td>{{ absent.type }}</td>
+                                        <td>{{ absent.details }}</td>
+                                        <td>{{ formatDate(absent.from) }}</td>
+                                        <td>{{ formatDate(absent.to) }}</td>
+                                        <td
+                                            :class="{ 'text-success': absent.approve, 'text-warning': absent.approve == null, 'text-error': !absent.approve }">
+                                            {{ absent.approve ? 'อนุมัติแล้ว' : !absent.approve ? 'ไม่ได้รับการอนุมัติ'
+                                                    : 'รออนุมัติ'
+                                            }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABSENT HISTORY FOR ADMIN -->
+            <div class="bg-white p-4 rounded-xl" v-if="role.isAdmin($page.props.user.role)">
+                <p class="text-2xl text-primary font-bold mb-5">ประวัติการลา</p>
+                <div class="flex mb-5">
                     <div class="mr-3">
                         <label for="" class="mr-2">ระดับชั้น:</label>
                         <select class="select select-bordered">
