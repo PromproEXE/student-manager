@@ -6,27 +6,7 @@ import { Head } from '@inertiajs/inertia-vue3';
 export default {
     data() {
         return {
-            officers: [{
-                id: 1,
-                std_id: '09362',
-                name: 'ชาญวิช มาศมัณฑนะ',
-                class: '6',
-                room: '3',
-            },
-            {
-                id: 2,
-                std_id: '09362',
-                name: 'รักษิต รุ่งรัตนไชย',
-                class: '6',
-                room: '5',
-            },
-            {
-                id: 3,
-                std_id: '09362',
-                name: 'เกียรติศักดิ์ มากมีทรัพย์',
-                class: '5',
-                room: '4',
-            }]
+            officers: []
         }
     }
 }
