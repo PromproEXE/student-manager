@@ -39,7 +39,7 @@ export function validateUser(data) {
         } else if (
             isNaN(parseInt(data.class)) ||
             parseInt(data.class) < 1 ||
-            parseInt(data.class > 6)
+            parseInt(data.class) > 6
         ) {
             message.class = "ระดับชั้นไม่ถูกต้อง";
         }
@@ -61,7 +61,7 @@ export function validateUser(data) {
         //TEACHER ENGLISH NAME
         if (isEmpty(data.eng_name)) {
             message.eng_name =
-                "ชื่อ-นามสกุล ภาษาอังกฤษไม่สามารถเป็นเว้นว่างได้";
+                "ชื่อ-นามสกุล (ภาษาอังกฤษ) ไม่สามารถเป็นเว้นว่างได้";
         }
 
         //TEACHER CLASS
@@ -70,7 +70,7 @@ export function validateUser(data) {
         } else if (
             isNaN(parseInt(data.class)) ||
             parseInt(data.class) < 1 ||
-            parseInt(data.class > 6)
+            parseInt(data.class) > 6
         ) {
             message.class = "ระดับชั้นไม่ถูกต้อง";
         }
@@ -81,13 +81,24 @@ export function validateUser(data) {
         }
 
         //TEACHER ADVISOR CLASS
-        if (!isEmpty(data.data.advisor.class) && data.data.advisor.class < 1) {
+        if (
+            !isEmpty(data.data.advisor.class) &&
+            (data.data.advisor.class < 1 || data.data.advisor.class > 6)
+        ) {
             message.advisor_class = "ระดับชั้นไม่ถูกต้อง";
         }
 
         //TEACHER ADVISOR ROOM
         if (!isEmpty(data.data.advisor.room) && data.data.advisor.room < 1) {
             message.advisor_room = "ห้องไม่ถูกต้อง";
+        }
+    }
+
+    if (data.role.indexOf("admin") > -1) {
+        //OFFICER ENGLISH NAME
+        if (isEmpty(data.eng_name)) {
+            message.eng_name =
+                "ชื่อ-นามสกุล (ภาษาอังกฤษ) ไม่สามารถเป็นเว้นว่างได้";
         }
     }
 

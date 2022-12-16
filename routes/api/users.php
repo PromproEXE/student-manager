@@ -21,7 +21,7 @@ Route::controller(UserController::class)
         Route::get('/', 'api_getall')->name('api_getall');
         Route::get('/student', 'api_getStudent')->name('api_getStudent');
         Route::get('/teacher', 'api_getTeacher')->name('api_getTeacher');
-        Route::get('/admin', 'api_getAdmin')->name('api_getAdmin');
+        Route::get('/officer', 'api_getAdmin')->name('api_getAdmin');
 
         Route::post('/create', 'api_create')->name('api_create');
         Route::put('/update/{id}', 'api_update')->name('api_update');

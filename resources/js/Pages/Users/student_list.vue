@@ -128,6 +128,10 @@ export default {
                 let res = await axios.put('/api/users/update/' + this.editUserData.id, this.editUserData)
                 if (res.status == 200) {
                     alert('แก้ไขข้อมูลเรียบร้อยแล้ว')
+                    let new_res = await axios('/api/users/student')
+                    if (new_res.status == 200) {
+                        this.students = new_res.data
+                    }
                 }
             }
             catch (err) {
@@ -151,6 +155,7 @@ export default {
                 console.log(err)
             }
             this.deleteUserData = []
+            this.selectedStudent = []
             window.location.href = this.rootUrl
         }
     },
@@ -196,7 +201,7 @@ export default {
             if (this.selectAll) {
                 this.selectedStudent = this.students
             }
-            else {
+            else if (this.selectedStudent.length == this.students.length) {
                 this.selectedStudent = []
             }
         }
@@ -301,7 +306,7 @@ export default {
         </div>
 
         <!-- EDIT MODAL -->
-        <div class="modal" id="edit-modal" v-if="editUserData != {}">
+        <div class="modal" id="edit-modal" v-if="Object.keys(editUserData).length > 0">
             <form @submit.prevent="updateUserData()">
                 <div class="modal-box w-full max-w-5xl">
                     <div class="flex justify-between items-center mb-3">

@@ -133,8 +133,8 @@ export default {
                     document.getElementById('add-user-csv-file').value = null
                     this.addUserData = []
 
-                    let res_student = await axios('/api/users/teacher')
-                    this.teachers = res_student.data
+                    let res_teacher = await axios('/api/users/teacher')
+                    this.teachers = res_teacher.data
                 }
             }
             catch (err) {
@@ -157,6 +157,11 @@ export default {
                 let res = await axios.put('/api/users/update/' + this.editUserData.id, this.editUserData)
                 if (res.status == 200) {
                     alert('แก้ไขข้อมูลเรียบร้อยแล้ว')
+                    let new_res = await axios('/api/users/teacher')
+
+                    if (new_res.status == 200) {
+                        this.teachers = new_res.data
+                    }
                 }
             }
             catch (err) {
@@ -171,8 +176,8 @@ export default {
                     let res = await axios.delete('/api/users/delete/' + user.id)
                 }
                 alert('ลบอาจารย์เรียบร้อยแล้ว')
-                let res_student = await axios('/api/users/teacher')
-                this.teachers = res_student.data
+                let res_teacher = await axios('/api/users/teacher')
+                this.teachers = res_teacher.data
 
             }
             catch (err) {
@@ -180,6 +185,7 @@ export default {
                 console.log(err)
             }
             this.deleteUserData = []
+            this.selectedTeacher = []
             window.location.href = this.rootUrl
         }
     },
@@ -225,7 +231,7 @@ export default {
             if (this.selectAll) {
                 this.selectedTeacher = this.teachers
             }
-            else {
+            else if (this.selectedTeacher.length == this.teachers.length) {
                 this.selectedTeacher = []
             }
         }
@@ -356,14 +362,14 @@ export default {
                     </div>
                     <div class="grid grid-cols-3 gap-5 gap-y-3 px-5 mb-7">
                         <div class="form-control">
-                            <label for="edit-name" class="mb-1 required">ชื่อ-นามสกุล ภาษาไทย</label>
+                            <label for="edit-name" class="mb-1 required">ชื่อ-นามสกุล (ภาษาไทย)</label>
                             <input type="text" id="edit-name" class="input input-sm input-bordered"
                                 :class="{ 'border-error': errorBag.message.name }" placeholder="ชื่อ-นามสกุล"
                                 v-model="editUserData.name">
                             <small class="text-error mt-1">{{ errorBag.message.name }}</small>
                         </div>
                         <div class="form-control">
-                            <label for="edit-name" class="mb-1 required">ชื่อ-นามสกุล ภาษาอังกฤษ</label>
+                            <label for="edit-name" class="mb-1 required">ชื่อ-นามสกุล (ภาษาอังกฤษ)</label>
                             <input type="text" id="edit-name" class="input input-sm input-bordered"
                                 :class="{ 'border-error': errorBag.message.eng_name }"
                                 placeholder="ชื่อ-นามสกุล ภาษาอังกฤษ" v-model="editUserData.eng_name">
@@ -416,8 +422,8 @@ export default {
                         <div class="form-control">
                             <label for="edit-std-id" class="mb-1 required">อีเมล</label>
                             <input type="email" id="edit-std-id" class="input input-sm input-bordered"
-                                :class="{ 'border-error': errorBag.message.email }" placeholder="student@example.com"
-                                v-model="editUserData.email">
+                                :class="{ 'border-error': errorBag.message.email }" placeholder="teacher@example.com"
+                                v-model="editUserData.email" required>
                             <small class="text-error mt-1">{{ errorBag.message.email }}</small>
                         </div>
                     </div>
@@ -494,30 +500,34 @@ export default {
                             </div>
                         </div>
                         <p class="text-lg font-medium mb-1">รายชื่อที่จะถูกเพิ่ม</p>
-                        <table class="table table-zebra w-full">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th class="text-lg">ชื่อ-นามสกุล</th>
-                                    <th class="text-lg">กลุ่มสาระการเรียนรู้</th>
-                                    <th class="text-lg text-center">ระดับชั้น</th>
-                                    <th class="text-lg text-center">สอนรายวิชา</th>
-                                    <th class="text-lg text-center">อาจารย์ที่ปรึกษา</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="hover" v-for="(teacher, i) in addUserData" :key="i">
-                                    <td>{{ i + 1 }}</td>
-                                    <td>{{ teacher.name || 'ไม่ได้ระบุ' }}</td>
-                                    <td>{{ teacher.data.department || 'ไม่ได้ระบุ' }}</td>
-                                    <td class="text-center">{{ teacher.class || 'ไม่ได้ระบุ' }}</td>
-                                    <td class="text-center">{{ teacher.data.classroom || 'ไม่ได้ระบุ' }}</td>
-                                    <td class="text-center">{{ teacher.data.advisor.class + '/' +
-                                            teacher.data.advisor.room || 'ไม่ได้ระบุ'
-                                    }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="overflow-auto">
+                            <table class="table table-zebra w-full">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th class="text-lg">ชื่อ-นามสกุล (ภาษาไทย)</th>
+                                        <th class="text-lg">ชื่อ-นามสกุล (ภาษาอังกฤษ)</th>
+                                        <th class="text-lg">กลุ่มสาระการเรียนรู้</th>
+                                        <th class="text-lg text-center">ระดับชั้น</th>
+                                        <th class="text-lg text-center">สอนรายวิชา</th>
+                                        <th class="text-lg text-center">อาจารย์ที่ปรึกษา</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover" v-for="(teacher, i) in addUserData" :key="i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ teacher.name || 'ไม่ได้ระบุ' }}</td>
+                                        <td>{{ teacher.eng_name || 'ไม่ได้ระบุ' }}</td>
+                                        <td>{{ teacher.data.department || 'ไม่ได้ระบุ' }}</td>
+                                        <td class="text-center">{{ teacher.class || 'ไม่ได้ระบุ' }}</td>
+                                        <td class="text-center">{{ teacher.data.classroom || 'ไม่ได้ระบุ' }}</td>
+                                        <td class="text-center">{{ teacher.data.advisor.class + '/' +
+                                                teacher.data.advisor.room || 'ไม่ได้ระบุ'
+                                        }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -550,14 +560,14 @@ export default {
                     </div>
                     <div class="grid grid-cols-3 gap-5 gap-y-3 px-4 mb-7">
                         <div class="form-control">
-                            <label for="edit-name" class="mb-1 required">ชื่อ-นามสกุล ภาษาไทย</label>
+                            <label for="edit-name" class="mb-1 required">ชื่อ-นามสกุล (ภาษาไทย)</label>
                             <input type="text" id="edit-name" class="input input-sm input-bordered"
                                 :class="{ 'border-error': errorBag.message.name }" placeholder="ชื่อ-นามสกุล ภาษาไทย"
                                 v-model="addUserData[0].name">
                             <small class="text-error mt-1">{{ errorBag.message.name }}</small>
                         </div>
                         <div class="form-control">
-                            <label for="edit-name" class="mb-1 required">ชื่อ-นามสกุล ภาษาอังกฤษ</label>
+                            <label for="edit-name" class="mb-1 required">ชื่อ-นามสกุล (ภาษาอังกฤษ)</label>
                             <input type="text" id="edit-name" class="input input-sm input-bordered"
                                 :class="{ 'border-error': errorBag.message.eng_name }"
                                 placeholder="ชื่อ-นามสกุล ภาษาอังกฤษ" v-model="addUserData[0].eng_name">
@@ -621,7 +631,7 @@ export default {
                 </div>
                 <div class="text-center">
                     <p class="text-xl">คุณต้องการลบอาจารย์เหล่านี้หรือไม่</p>
-                    <p class="text-xl font-bold" v-for="student in deleteUserData" :key="student.id">{{ student.name
+                    <p class="text-xl font-bold" v-for="teacher in deleteUserData" :key="teacher.id">{{ teacher.name
                     }}</p>
                 </div>
                 <div class="modal-action grid grid-cols-2 gap-5">
