@@ -19,12 +19,6 @@ export default {
             selectedStudent: [],
             selectAll: false,
             editUserData: {
-                std_id: '',
-                email: '',
-                name: '',
-                class: '',
-                room: '',
-                birth_day: ''
             },
             deleteUserData: [],
             addUserData: [],
@@ -62,6 +56,7 @@ export default {
                 class: null,
                 room: null,
                 birth_day: null,
+                role: ['student']
             })
         },
         clearAddUser() {
@@ -73,14 +68,42 @@ export default {
         clearDeleteUser() {
             this.deleteUserData = []
         },
+        readAdduserCsv() {
+            let reader = new FileReader()
+            let fileElement = document.getElementById('add-user-csv-file').files
+            reader.addEventListener('load', (event) => {
+                //SPLIT \n TO ARRAY
+                let rawData = reader.result.split('\n')
+                rawData.splice(0, 1)
+
+                for (let data of rawData) {
+                    let student = data.split(',')
+                    this.addUserData.push({
+                        std_id: student[0],
+                        name: student[1],
+                        class: student[2],
+                        room: student[3],
+                        birth_day: student[4].length != 0 ? student[4] : null,
+                        role: ['student']
+                    })
+                }
+
+                console.log(this.addUserData)
+            })
+
+            for (let file of fileElement) {
+                reader.readAsText(file)
+            }
+        },
         async addUser() {
             try {
                 let res = await axios.post('/api/users/create', this.addUserData)
                 if (res.status == 200) {
                     alert('เพิ่มนักเรียนสำเร็จ')
 
-                    this.addUserData = []
                     window.location.href = this.rootUrl
+                    document.getElementById('add-user-csv-file').value = null
+                    this.addUserData = []
 
                     let res_student = await axios('/api/users/student')
                     this.students = res_student.data
@@ -90,11 +113,13 @@ export default {
                 alert('มีปัญหาระหว่างเพิ่มผู้ใช้')
                 console.log(err)
             }
+            this.errorBag = { status: true, message: {} }
+
         },
         async updateUserData() {
             try {
                 //VALIDATE
-                this.errorBag = {}
+                this.errorBag = { status: true, message: {} }
                 this.errorBag = validate.validateUser(this.editUserData)
                 if (!this.errorBag.status) {
                     return
@@ -109,6 +134,7 @@ export default {
                 alert('มีปัญหาระหว่างการบันทึกข้อมูล')
                 console.log(err)
             }
+            this.errorBag = { status: true, message: {} }
         },
         async deleteUser() {
             try {
@@ -159,7 +185,7 @@ export default {
                 this.selectAll = false
             }
 
-            if (this.selectedStudent.length == this.students.length) {
+            if (this.selectedStudent.length == this.students.length && this.students.length != 0) {
                 this.selectAll = true
             }
             else {
@@ -275,7 +301,7 @@ export default {
         </div>
 
         <!-- EDIT MODAL -->
-        <div class="modal" id="edit-modal">
+        <div class="modal" id="edit-modal" v-if="editUserData != {}">
             <form @submit.prevent="updateUserData()">
                 <div class="modal-box w-full max-w-5xl">
                     <div class="flex justify-between items-center mb-3">
@@ -381,29 +407,68 @@ export default {
 
         <!-- ADD BY CSV MODAL -->
         <div class="modal" id="add-user-csv-modal">
+
             <div class="modal-box w-full max-w-5xl">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="font-bold text-3xl">เพิ่มรายชื่อนักเรียน</h3>
-                    <a href="#" class="btn btn-circle btn-ghost" role="button">
-                        <span class="material-symbols-rounded">
-                            close
-                        </span>
-                    </a>
-                </div>
-                <div class="grid grid-cols-2 gap-5">
-                    <a role="button" href="#add-user-csv-modal"
-                        class="rounded-lg bg-secondary p-5 py-36 text-center bg-opacity-50 border-4 border-primary">
-                        <p class="text-primary text-2xl font-bold">เพิ่มรายชื่อด้วยไฟล์ .csv</p>
-                        <p class="text-primary">เพิ่มโดยการใช้ไฟล์ .csv ของระบบไปทำการเพิ่มข้อมูลนักเรียน
-                            สามารถเพิ่มข้อมูลนักเรียนได้หลายคนในครั้งเดียว</p>
-                    </a>
-                    <a role="button" href="#add-user-form-modal"
-                        class="rounded-lg bg-gray-100 p-5 py-36 text-center bg-opacity-50 border-4 border-gray-400">
-                        <p class="text-primary text-2xl font-bold">เพิ่มรายชื่อด้วยฟอร์มของระบบ</p>
-                        <p class="text-primary">เพิ่มโดยการกรอกฟอร์มลงในระบบ เหมาะกับการเพิ่มนักเรียนจำนวนน้อย ๆ</p>
-                    </a>
-                </div>
+                <form @submit.prevent="addUser()">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex">
+                            <a href="#add-modal" role="button"
+                                class="btn btn-sm text-primary hover:bg-transparent hover:border hover:border-b-2 text-xl btn-ghost mr-3">
+                                <span class="material-symbols-rounded">
+                                    arrow_back
+                                </span>
+                                ย้อนกลับ</a>
+                            <h3 class="text-gray-400 text-xl pt-0.5">เพิ่มรายชื่อนักเรียนด้วยไฟล์ CSV</h3>
+                        </div>
+                        <a href="#" class="btn btn-circle btn-ghost" role="button" @click="clearAddUser()">
+                            <span class="material-symbols-rounded">
+                                close
+                            </span>
+                        </a>
+                    </div>
+                    <div class="px-4">
+                        <div class="form-control mb-3">
+                            <div class="flex mb-1">
+                                <label for="add-csv-file" class="mr-3 text-lg">เลือกไฟล์</label>
+                                <a href="/download/example-user-csv.csv" role="button"
+                                    class="btn btn-sm btn-warning">ดาวน์โหลดไฟล์เตรียมข้อมูล</a>
+                            </div>
+                            <input type="file" id="add-user-csv-file"
+                                class="file-input file-input-bordered file-input-primary w-full mb-5" multiple
+                                @change="readAdduserCsv()" accept=".csv" />
+                            <div class="grid grid-cols-2 gap-5">
+                                <button type="submit" class="btn btn-success text-lg">เพิ่มนักเรียน</button>
+                                <button type="reset" class="btn btn-error text-lg"
+                                    @click="clearAddUser()">ล้างข้อมูล</button>
+                            </div>
+                        </div>
+                        <p class="text-lg font-medium mb-1">รายชื่อที่จะถูกเพิ่ม</p>
+                        <table class="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="text-lg">เลขประจำตัว</th>
+                                    <th class="text-lg">ชื่อ-นามสกุล</th>
+                                    <th class="text-lg">ระดับชั้น</th>
+                                    <th class="text-lg">ห้อง</th>
+                                    <th class="text-lg">วันเกิด</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover" v-for="(student, i) in addUserData" :key="i">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ student.std_id || 'ไม่ได้ระบุ' }}</td>
+                                    <td>{{ student.name || 'ไม่ได้ระบุ' }}</td>
+                                    <td>{{ student.class || 'ไม่ได้ระบุ' }}</td>
+                                    <td>{{ student.room || 'ไม่ได้ระบุ' }}</td>
+                                    <td>{{ student.birth_day || 'ไม่ได้ระบุ' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
             </div>
+
         </div>
 
         <!-- ADD BY FORM MODAL -->
@@ -420,7 +485,7 @@ export default {
                                 ย้อนกลับ</a>
                             <h3 class="text-gray-400 text-xl pt-0.5">เพิ่มรายชื่อนักเรียนด้วยฟอร์ม</h3>
                         </div>
-                        <a href="#" class="btn btn-circle btn-ghost" role="button">
+                        <a href="#" class="btn btn-circle btn-ghost" role="button" @click="clearAddUser()">
                             <span class="material-symbols-rounded">
                                 close
                             </span>
