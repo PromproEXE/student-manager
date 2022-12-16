@@ -18,23 +18,23 @@ export function validateUser(data) {
     }
 
     //USER EMAIL
-    if (data.email == "" || data.email == null) {
-        message.email = "อีเมล์ไม่สามารถเว้นว่างได้";
-    } else if (
-        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)
-    ) {
-        message.email = "อีเมลไม่ถูกต้อง";
-    }
+    // if (data.email == "" || data.email == null) {
+    //     message.email = "อีเมล์ไม่สามารถเว้นว่างได้";
+    // } else if (
+    //     !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)
+    // ) {
+    //     message.email = "อีเมลไม่ถูกต้อง";
+    // }
 
     //VALIDATE BY ROLE
     if (data.role.indexOf("student") > -1) {
         //STUDENT ID
-        if (data.std_id == "" || data.std_id == null) {
+        if (isEmpty(data.std_id)) {
             message.std_id = "เลขประจำตัวไม่สามารถเว้นว่างได้";
         }
 
         //STUDENT CLASS
-        if (data.class == "" || data.class == null) {
+        if (isEmpty(data.class)) {
             message.class = "ระดับชั้นไม่สามารถเว้นว่างได้";
         } else if (
             isNaN(parseInt(data.class)) ||
@@ -45,7 +45,7 @@ export function validateUser(data) {
         }
 
         //STUDENT ROOM
-        if (data.room == "" || data.room == null) {
+        if (isEmpty(data.room)) {
             message.room = "ห้องไม่สามารถเว้นว่างได้";
         } else if (isNaN(parseInt(data.room)) || parseInt(data.class) < 1) {
             message.room = "ห้องเรียนไม่ถูกต้อง";
@@ -54,6 +54,40 @@ export function validateUser(data) {
         //STUDENT BIRTH DAY
         if (!isEmpty(data.birth_day) && isNaN(Date.parse(data.birth_day))) {
             message.birth_day = "วันเกิดไม่ถูกต้อง";
+        }
+    }
+
+    if (data.role.indexOf("teacher") > -1) {
+        //TEACHER ENGLISH NAME
+        if (isEmpty(data.eng_name)) {
+            message.eng_name =
+                "ชื่อ-นามสกุล ภาษาอังกฤษไม่สามารถเป็นเว้นว่างได้";
+        }
+
+        //TEACHER CLASS
+        if (isEmpty(data.class)) {
+            message.class = "ระดับชั้นไม่สามารถเว้นว่างได้";
+        } else if (
+            isNaN(parseInt(data.class)) ||
+            parseInt(data.class) < 1 ||
+            parseInt(data.class > 6)
+        ) {
+            message.class = "ระดับชั้นไม่ถูกต้อง";
+        }
+
+        //TEACHER DEPARTMENT
+        if (isEmpty(data.data.department)) {
+            message.department = "กรุณาเลือกกลุ่มสาระการเรียนรู้";
+        }
+
+        //TEACHER ADVISOR CLASS
+        if (!isEmpty(data.data.advisor.class) && data.data.advisor.class < 1) {
+            message.advisor_class = "ระดับชั้นไม่ถูกต้อง";
+        }
+
+        //TEACHER ADVISOR ROOM
+        if (!isEmpty(data.data.advisor.room) && data.data.advisor.room < 1) {
+            message.advisor_room = "ห้องไม่ถูกต้อง";
         }
     }
 

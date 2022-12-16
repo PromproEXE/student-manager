@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -17,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('user_id');
             $table->string('type');
-            $table->timestamp('from');
-            $table->timestamp('to');
+            $table->timestamp('from')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('to')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->text('details');
             $table->boolean('approve')->nullable();
             $table->string('created_by');

@@ -26,6 +26,7 @@ class User extends Authenticatable
     protected $fillable = [
         'std_id',
         'name',
+        'eng_name',
         'class',
         'room',
         'data',
@@ -56,6 +57,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
+        'data' => 'array',
         'role' => 'array',
         'classroom' => 'array',
         'attend_history' => 'array',

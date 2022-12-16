@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('std_id')->nullable();
             $table->string('name');
+            $table->string('eng_name')->nullable();
             $table->string('class')->nullable();
             $table->string('room')->nullable();
             $table->json('data')->nullable();

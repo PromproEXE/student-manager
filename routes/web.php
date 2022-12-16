@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\FileController;
 use Illuminate\Http\Request;
 
 /*
@@ -42,4 +43,7 @@ Route::middleware([
     Route::prefix('missing-items')->group(base_path('routes/frontend/missing-items.php'));
     Route::prefix('users')->group(base_path('routes/frontend/users.php'));
     Route::prefix('class')->group(base_path('routes/frontend/class.php'));
+
+
+    Route::get('/download/{fileName}', [FileController::class, 'getFile']);
 });

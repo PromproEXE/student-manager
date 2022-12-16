@@ -54,28 +54,84 @@ class UserController extends Controller
         try {
             $userData = [];
             foreach ($request->all() as $data) {
-                $data['email'] = 'st' . $data['std_id'] . '@kjn.ac.th';
-                $data['password'] = 'kjn' . $data['std_id'];
+                $user = null;
+                //STUDENT
+                if (array_search('student', $data['role']) !== false) {
+                    //ASSIGN EMAIL AND PASSWORD
+                    $data['email'] = 'st' . $data['std_id'] . '@kjn.ac.th';
+                    $data['password'] = 'kjn' . $data['std_id'];
 
-                Validator::make($data, [
-                    'std_id' => ['required'],
-                    'name' => ['required', 'string', 'max:255', 'unique:users'],
-                    'class' => ['required'],
-                    'room' => ['required'],
-                    'birth_day' => ['required'],
-                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                    'password' => $this->passwordRules(),
-                ]);
-                $user = User::create([
-                    'std_id' => $data['std_id'],
-                    'name' => $data['name'],
-                    'class' => $data['class'],
-                    'room' => $data['room'],
-                    'birth_day' => $data['birth_day'],
-                    'email' => $data['email'],
-                    'password' => Hash::make($data['password']),
-                    'role' => ["student"],
-                ]);
+                    //VALIDATE
+                    Validator::make($data, [
+                        'std_id' => ['required'],
+                        'name' => ['required', 'string', 'max:255'],
+                        'class' => ['required'],
+                        'room' => ['required'],
+                        'birth_day' => ['required'],
+                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                        'password' => $this->passwordRules(),
+                    ]);
+
+                    $user = User::create([
+                        'std_id' => $data['std_id'],
+                        'name' => $data['name'],
+                        'class' => $data['class'],
+                        'room' => $data['room'],
+                        'birth_day' => $data['birth_day'],
+                        'email' => $data['email'],
+                        'password' => Hash::make($data['password']),
+                        'role' => $data['role'],
+                    ]);
+                }
+                //TEACHER
+                else if (array_search('teacher', $data['role']) !== false) {
+                    //ASSIGN EMAIL AND PASSWORD
+                    $data['email'] = join('.', explode(' ', $data['eng_name'])) . '@kjn.ac.th';
+                    $data['password'] = 'kjn' . strtolower(explode(' ', $data['eng_name'])[0]);
+
+                    //VALIDATE
+                    Validator::make($data, [
+                        'name' => ['required', 'string', 'max:255'],
+                        'eng_name' => ['required', 'string', 'max:255'],
+                        'class' => ['required'],
+                        'data' => ['required'],
+                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                        'password' => $this->passwordRules(),
+                    ]);
+
+                    $user = User::create([
+                        'name' => $data['name'],
+                        'eng_name' => $data['eng_name'],
+                        'class' => $data['class'],
+                        'data' => $data['data'],
+                        'email' => $data['email'],
+                        'password' => Hash::make($data['password']),
+                        'role' => $data['role'],
+                    ]);
+                }
+                //ADMIN
+                else if (array_search('admin', $data['role']) !== false) {
+                    //ASSIGN EMAIL AND PASSWORD
+                    $data['email'] = join('.', explode(' ', $data['eng_name'])) . '@kjn.ac.th';
+                    $data['password'] = 'kjn' . strtolower(explode(' ', $data['eng_name'])[0]);
+
+                    //VALIDATE
+                    Validator::make($data, [
+                        'name' => ['required', 'string', 'max:255'],
+                        'eng_name' => ['required', 'string', 'max:255'],
+                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                        'password' => $this->passwordRules(),
+                    ]);
+
+                    $user = User::create([
+                        'name' => $data['name'],
+                        'eng_name' => $data['eng_name'],
+                        'email' => $data['email'],
+                        'password' => Hash::make($data['password']),
+                        'role' => $data['role'],
+                    ]);
+                }
+
                 array_push($userData, $user);
             }
             return $userData;
@@ -87,15 +143,33 @@ class UserController extends Controller
     public function api_update(Request $request, $id)
     {
         try {
-            Validator::make($request->all(), [
-                'id' => ['required'],
-                'std_id' => ['required'],
-                'name' => ['required', 'string', 'max:255', 'unique:users'],
-                'class' => ['required'],
-                'room' => ['required'],
-                'birth_day' => ['required'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            ]);
+            if (array_search('student', $request['role']) !== false) {
+                Validator::make($request->all(), [
+                    'id' => ['required', 'unique:users'],
+                    'std_id' => ['required'],
+                    'name' => ['required', 'string', 'max:255'],
+                    'class' => ['required'],
+                    'room' => ['required'],
+                    'birth_day' => ['required'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                ]);
+            } else if (array_search('teacher', $request['role']) !== false) {
+                Validator::make($request->all(), [
+                    'id' => ['required', 'unique:users'],
+                    'name' => ['required', 'string', 'max:255'],
+                    'eng_name' => ['required', 'string', 'max:255'],
+                    'data' => ['required'],
+                    'class' => ['required'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                ]);
+            } else if (array_search('admin', $request['role']) !== false) {
+                Validator::make($request->all(), [
+                    'id' => ['required', 'unique:users'],
+                    'name' => ['required', 'string', 'max:255'],
+                    'eng_name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                ]);
+            }
             $user = User::where('id', $id)->first()->update($request->all());
             return $user;
         } catch (Exception $err) {
