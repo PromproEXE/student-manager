@@ -173,7 +173,7 @@ export default {
                                     isStudent($page.props.user.role) ? 'นักเรียน' : ''
                             }} {{ isTeacher($page.props.user.role) ? 'อาจารย์' : '' }}
                                 {{
-                                        isAdmin($page.props.user.role) ? 'ผู้ดูแล' : ''
+                                        isAdmin($page.props.user.role) ? 'เจ้าหน้าที่' : ''
                                 }} {{
         isSystem($page.props.user.role) ? 'ผู้ดูแลระบบ' : ''
 }}</p>
