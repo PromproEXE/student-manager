@@ -18,6 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('user_id');
             $table->string('user_name');
+            $table->string('user_class');
+            $table->string('user_room');
             $table->string('type');
             $table->timestamp('from')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('to')->default(DB::raw('CURRENT_TIMESTAMP'));
