@@ -5,6 +5,7 @@ import axios from 'axios';
 import { cloneDeep } from 'lodash';
 import { isAdmin, isStudent, isTeacher } from '@/role'
 import { validateAbsent } from '@/data-validator'
+axios.defaults.withCredentials = true
 </script>
 <script>
 function padTo2Digits(num) {
@@ -96,10 +97,10 @@ export default {
             try {
                 let res = null
                 if (isStudent(Inertia.page.props.user.role)) {
-                    res = await axios('/api/absent/user_id/' + Inertia.page.props.user.id)
+                    res = await axios('/api/absent/user_id/' + Inertia.page.props.user.id + '/')
                 }
                 else if (isTeacher(Inertia.page.props.user.role)) {
-                    res = await axios('/api/absent/class/' + Inertia.page.props.user.data.advisor.class + '/room/' + Inertia.page.props.user.data.advisor.room)
+                    res = await axios('/api/absent/class/' + Inertia.page.props.user.data.advisor.class + '/room/' + Inertia.page.props.user.data.advisor.room + '/')
                 }
                 else if (isAdmin(Inertia.page.props.user.role)) {
                     res = await axios('/api/absent/')
@@ -282,7 +283,8 @@ export default {
 
             <!-- ABSENT REQUEST -->
             <div class="bg-white p-5 rounded-xl mb-5">
-                <p class="text-2xl text-primary font-bold mb-3" v-if="isStudent($page.props.user.role)">
+                <p class="text-2xl text-primary font-bold mb-3"
+                    v-if="isStudent($page.props.user.role) || isAdmin($page.props.user.role)">
                     คำขอการลา</p>
                 <p class="text-2xl text-primary font-bold mb-3" v-else>คำขอการลาห้องม.{{
                         $page.props.user.data.advisor.class +
@@ -396,15 +398,15 @@ export default {
                         <select class="select select-bordered select-sm text-xs" id="filter-history-class"
                             v-model="filter_absent_history.class">
                             <option value="all">ทั้งหมด</option>
-                            <option v-for="classes in 6" :key="classes">ม.{{ classes }}</option>
+                            <option v-for="classes in 6" :key="classes" :value="classes">ม.{{ classes }}</option>
                         </select>
                     </div>
                     <div class="mr-3" v-if="isAdmin($page.props.user.role)">
                         <label for="filter-history-room" class="mr-2">ห้อง:</label>
                         <select class="select select-bordered select-sm text-xs" id="filter-history-room"
-                            v-model="filter_absent_history.class">
+                            v-model="filter_absent_history.room">
                             <option value="all">ทั้งหมด</option>
-                            <option v-for="room in 14" :key="room">{{ room }}</option>
+                            <option v-for="room in 14" :key="room" :value="room">{{ room }}</option>
                         </select>
                     </div>
                     <div>

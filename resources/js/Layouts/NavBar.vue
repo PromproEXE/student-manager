@@ -110,9 +110,10 @@ export default {
                                     format_list_numbered
                                 </span>ดูเกรด</a></li>
                     </template>
+
+                    <!-- NAVBAR FOR ADMIN -->
                     <template v-if="isAdmin($page.props.user.role)">
-                        <li class="rounded-xl text-xl" tabindex="0"
-                            v-if="$page.props.user.data.advisor.class.length != 0">
+                        <li class="rounded-xl text-xl" tabindex="0">
                             <a>
                                 <span class="material-symbols-rounded">
                                     schedule

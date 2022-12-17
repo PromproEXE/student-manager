@@ -82,6 +82,33 @@ class UserController extends Controller
         }
     }
 
+    public function api_countStudent()
+    {
+        try {
+            return User::where('role', 'like', '%student%')->count();
+        } catch (Exception $err) {
+            return response($err, 403);
+        }
+    }
+
+    public function api_countTeacher()
+    {
+        try {
+            return User::where('role', 'like', '%teacher%')->count();
+        } catch (Exception $err) {
+            return response($err, 403);
+        }
+    }
+
+    public function api_countAdmin()
+    {
+        try {
+            return User::where('role', 'like', '%admin%')->count();
+        } catch (Exception $err) {
+            return response($err, 403);
+        }
+    }
+
     public function api_create(Request $request)
     {
         try {

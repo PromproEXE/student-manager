@@ -22,6 +22,8 @@
     <link rel="manifest" href="/icon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#b18ae3">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
