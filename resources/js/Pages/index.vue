@@ -1,18 +1,49 @@
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue';
+import SkeletonBar from '@/components/SkeletonBar.vue'
 import Chart from 'chart.js/auto';
 import { Head } from '@inertiajs/inertia-vue3';
-import * as role from '@/role'
+import { isAdmin, isStudent, isTeacher, isSystem } from '@/role'
+import { Inertia } from '@inertiajs/inertia';
+import axios from 'axios';
 </script>
 
 <script>
 export default {
     data() {
         return {
-
+            student_amount: -1,
+            teacher_amount: -1,
+            officer_amount: -1,
         }
     },
     methods: {
+        async getUserAmount() {
+            try {
+                //REQUEST
+                let amountUrl = ['/api/users/student/count/', '/api/users/teacher/count/', '/api/users/officer/count/']
+                let res = await axios.all(amountUrl.map((url) => axios(url)))
+
+                //GET STUDENT AMOUNT
+                if (res[0].status == 200) {
+                    this.student_amount = res[0].data
+                }
+
+                //GET TEACHER AMOUNT
+                if (res[1].status == 200) {
+                    this.teacher_amount = res[1].data
+                }
+
+                //GET OFFICER AMOUNT
+                if (res[2].status == 200) {
+                    this.officer_amount = res[2].data
+                }
+            }
+            catch (err) {
+                alert('เกิดปัญหาระหว่างดึงจำนวนผู้ใช้')
+                console.log(err)
+            }
+        },
         initChart() {
             const labels1 = [
                 'มกราคม',
@@ -114,7 +145,11 @@ export default {
         }
     },
     mounted() {
-        this.initChart()
+        // this.initChart()
+
+        if (isAdmin(Inertia.page.props.user.role)) {
+            this.getUserAmount()
+        }
     }
 }
 </script>
@@ -128,35 +163,34 @@ export default {
         <template #header>หน้าหลัก</template>
         <div class="overflow-auto" style="max-height: calc(100vh - 140px)">
             <div class="bg-white rounded-xl text-neutral p-5 mb-5">
-                <div class="flex items-center justify-between"
-                    :class="{ 'mb-5': role.isStudent($page.props.user.role) }">
+                <div class="flex items-center justify-between" :class="{ 'mb-5': isStudent($page.props.user.role) }">
                     <div class="flex items-center">
                         <div></div>
                         <img src="/img/account.png" class="mr-5" style="width: 100px" alt="">
                         <div>
                             <p class="text-4xl font-bold text-primary">{{ $page.props.user.name }}</p>
                             <p class="text-xl text-gray-400">{{
-                                    role.isStudent($page.props.user.role) ? 'นักเรียน' : ''
-                            }} {{ role.isTeacher($page.props.user.role) ? 'อาจารย์' : '' }}
+                                    isStudent($page.props.user.role) ? 'นักเรียน' : ''
+                            }} {{ isTeacher($page.props.user.role) ? 'อาจารย์' : '' }}
                                 {{
-                                        role.isAdmin($page.props.user.role) ? 'ผู้ดูแล' : ''
+                                        isAdmin($page.props.user.role) ? 'ผู้ดูแล' : ''
                                 }} {{
-        role.isSystem($page.props.user.role) ? 'ผู้ดูแลระบบ' : ''
+        isSystem($page.props.user.role) ? 'ผู้ดูแลระบบ' : ''
 }}</p>
                         </div>
                     </div>
-                    <div v-if="role.isStudent($page.props.user.role)">
+                    <div v-if="isStudent($page.props.user.role)">
                         <a :href="route('absent_view')" role="button" class="btn btn-warning text-lg mr-5">แจ้งลา</a>
                         <a role="button" class="btn btn-success text-lg">การบ้าน</a>
                     </div>
-                    <div v-if="role.isTeacher($page.props.user.role)">
+                    <div v-if="isTeacher($page.props.user.role)">
                         <a :href="route('absent_view')" role="button"
                             class="btn btn-warning text-lg mr-5">ยืนยันคำขอการลา</a>
                         <a role="button" class="btn btn-success text-lg">เพิ่มการบ้าน</a>
                     </div>
                 </div>
 
-                <template v-if="role.isStudent($page.props.user.role)">
+                <template v-if="isStudent($page.props.user.role)">
                     <div class="grid grid-cols-3 gap-5 mb-5">
                         <div class="bg-red-200 text-red-600 rounded-lg p-3 px-5">
                             <p class="text-xl font-bold mb-3">การบ้านที่ต้องส่งวันนี้
@@ -192,7 +226,7 @@ export default {
                 </template>
             </div>
 
-            <template v-if="role.isTeacher($page.props.user.role)">
+            <template v-if="isTeacher($page.props.user.role)">
                 <div class="rounded-xl bg-white p-5">
                     <div class="grid grid-cols-2 gap-5">
                         <div>
@@ -211,19 +245,23 @@ export default {
                 </div>
             </template>
 
-            <template v-if="role.isAdmin($page.props.user.role)">
+            <!-- ADMIN DASHBOARD -->
+            <template v-if="isAdmin($page.props.user.role)">
                 <div class="rounded-xl bg-white p-5 mb-5 grid grid-cols-3 gap-5">
                     <div class="bg-sky-200 text-sky-600 rounded-lg p-3 px-5">
                         <p class="text-xl font-bold mb-3">จำนวนนักเรียนทั้งหมด</p>
-                        <p class="text-4xl font-bold">2,500 คน</p>
+                        <p class="text-4xl font-bold" v-if="student_amount > -1">{{ student_amount }} คน</p>
+                        <SkeletonBar bg="bg-sky-600" class="w-1/2 h-8" v-else></SkeletonBar>
                     </div>
-                    <div class="bg-amber-200 text-amber-600 rounded-lg p-3 px-5">
+                    <div class="bg-amber-200 text-amber-600 rounded-lg p-3 px-5 h-full">
                         <p class="text-xl font-bold mb-3">จำนวนอาจารย์ทั้งหมด</p>
-                        <p class="text-4xl font-bold">100 คน</p>
+                        <p class="text-4xl font-bold" v-if="teacher_amount > -1">{{ teacher_amount }} คน</p>
+                        <SkeletonBar bg="bg-amber-600" class="w-1/2 h-8" v-else></SkeletonBar>
                     </div>
                     <div class="bg-pink-200 text-pink-600 rounded-lg p-3 px-5">
                         <p class="text-xl font-bold mb-3">จำนวนเจ้าหน้าที่</p>
-                        <p class="text-4xl font-bold">5 คน</p>
+                        <p class="text-4xl font-bold" v-if="officer_amount > -1">{{ officer_amount }} คน</p>
+                        <SkeletonBar bg="bg-pink-600" class="w-1/2 h-8" v-else></SkeletonBar>
                     </div>
                 </div>
                 <div class="rounded-xl bg-white p-5">
