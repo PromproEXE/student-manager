@@ -159,10 +159,6 @@ export default {
                                 <li><a :href="route('users_officer_list_view')">จัดการเจ้าหน้าที่</a></li>
                             </ul>
                         </li>
-                        <li class="rounded-xl text-xl"><a :href="route('class_list_view')"><span
-                                    class="material-symbols-rounded">
-                                    school
-                                </span>จัดการห้องเรียน</a></li>
 
                         <li class="rounded-xl text-xl"><a :href="route('missing_items_list_view')"><span
                                     class="material-symbols-rounded">
