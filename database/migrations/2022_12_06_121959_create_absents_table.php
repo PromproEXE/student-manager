@@ -17,11 +17,14 @@ return new class extends Migration
         Schema::create('absents', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
+            $table->string('user_name');
             $table->string('type');
             $table->timestamp('from')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('to')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->text('details');
             $table->boolean('approve')->nullable();
+            $table->string('approve_by')->nullable();
+            $table->timestamp('approve_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('created_by');
             $table->timestamps();
         });

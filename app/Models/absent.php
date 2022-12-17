@@ -9,5 +9,5 @@ class Absent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'type', 'to', 'from', 'details', 'approve', 'created_by'];
+    protected $fillable = ['user_id', 'user_name', 'type', 'to', 'from', 'details', 'approve', 'approve_at', 'approve_by', 'created_by'];
 }
