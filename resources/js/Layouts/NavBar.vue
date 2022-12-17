@@ -1,13 +1,25 @@
 <script setup>
 import { ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import * as role from '@/role';
+import { isAdmin, isStudent, isTeacher, isSystem } from '@/role';
 const logout = () => {
     Inertia.post(route('logout'));
 };
 </script>
 
 <script>
+export default {
+    data() {
+        return {
+
+        }
+    },
+    methods: {
+        isEmpty(str) {
+            return !str || str.length === 0
+        }
+    }
+}
 </script>
 
 <template>
@@ -23,7 +35,7 @@ const logout = () => {
                     <li class="rounded-xl text-xl"><a :href="route('index')"><span class="material-symbols-rounded">
                                 home
                             </span>หน้าหลัก</a></li>
-                    <template v-if="role.isStudent($page.props.user.role) || role.isTeacher($page.props.user.role)">
+                    <template v-if="isStudent($page.props.user.role)">
                         <li class="rounded-xl text-xl" tabindex="0">
                             <a>
                                 <span class="material-symbols-rounded">
@@ -54,13 +66,53 @@ const logout = () => {
                                 <li><a :href="route('timetable_list_view')">ตารางเรียน</a></li>
                             </ul>
                         </li>
-                        <li class="rounded-xl text-xl" v-if="role.isStudent($page.props.user.role)"><a
+                        <li class="rounded-xl text-xl" v-if="isStudent($page.props.user.role)"><a
                                 :href="route('doograde_grade_view')"><span class="material-symbols-rounded">
                                     format_list_numbered
                                 </span>ดูเกรด</a></li>
                     </template>
-                    <template v-if="role.isAdmin($page.props.user.role)">
+
+                    <!-- NAVBAR FOR TEACHER -->
+                    <template v-if="isTeacher($page.props.user.role)">
+                        <li class="rounded-xl text-xl" tabindex="0"
+                            v-if="!isEmpty($page.props.user.data.advisor.class) || !isEmpty($page.props.user.data.advisor.room)">
+                            <a>
+                                <span class="material-symbols-rounded">
+                                    schedule
+                                </span>เวลาเรียน
+                                <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                    viewBox="0 0 24 24">
+                                    <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+                                </svg>
+                            </a>
+                            <ul class="p-2 bg-white drop-shadow-xl">
+                                <li><a :href="route('absent_view')">แจ้งการลา</a></li>
+                                <li><a :href="route('coming_history_view')">ประวัติการมาโรงเรียน</a></li>
+                            </ul>
+                        </li>
                         <li class="rounded-xl text-xl" tabindex="0">
+                            <a>
+                                <span class="material-symbols-rounded">
+                                    calendar_month
+                                </span>การเรียน
+                                <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                    viewBox="0 0 24 24">
+                                    <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+                                </svg>
+                            </a>
+                            <ul class="p-2 bg-white drop-shadow-xl">
+                                <li><a :href="route('classroom_list_view')">ห้องเรียน</a></li>
+                                <li><a :href="route('timetable_list_view')">ตารางเรียน</a></li>
+                            </ul>
+                        </li>
+                        <li class="rounded-xl text-xl" v-if="isStudent($page.props.user.role)"><a
+                                :href="route('doograde_grade_view')"><span class="material-symbols-rounded">
+                                    format_list_numbered
+                                </span>ดูเกรด</a></li>
+                    </template>
+                    <template v-if="isAdmin($page.props.user.role)">
+                        <li class="rounded-xl text-xl" tabindex="0"
+                            v-if="$page.props.user.data.advisor.class.length != 0">
                             <a>
                                 <span class="material-symbols-rounded">
                                     schedule
