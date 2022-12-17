@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import Chart from 'chart.js/auto';
 import { Head } from '@inertiajs/inertia-vue3';
+import { isAdmin, isStudent, isTeacher, isSystem } from '@/role'
 </script>
 <script>
 export default {
@@ -121,7 +122,7 @@ export default {
     <Head title="ประวัติการมาโรงเรียน"></Head>
     <AppLayout>
         <template #header>ประวัติการมาโรงเรียน</template>
-        <div class="grid grid-cols-2 gap-5 bg-white rounded-xl p-5" v-if="$page.props.user.student">
+        <div class="grid grid-cols-2 gap-5 bg-white rounded-xl p-5" v-if="isStudent($page.props.user.role)">
             <div>
                 <p class="text-2xl text-primary font-bold mb-3">สถิติการมาเรียนในแต่ละเดือน</p>
                 <div style="height:300px">
@@ -135,7 +136,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-2 gap-5 bg-white rounded-xl p-5" v-if="$page.props.user.teacher">
+        <div class="grid grid-cols-2 gap-5 bg-white rounded-xl p-5" v-if="isTeacher($page.props.user.role)">
             <div>
                 <p class="text-2xl text-primary font-bold mb-3">สถิติการมาเรียนของนักเรียนในห้อง</p>
                 <div class="grid grid-cols-5 items-center mb-3">
@@ -157,7 +158,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="bg-white rounded-xl p-5" v-if="$page.props.user.admin">
+        <div class="bg-white rounded-xl p-5" v-if="isAdmin($page.props.user.role)">
             <p class="text-2xl text-primary font-bold mb-3">สถิติการมาเรียนของนักเรียนในห้อง</p>
             <div class="flex">
                 <div class="mr-3">
