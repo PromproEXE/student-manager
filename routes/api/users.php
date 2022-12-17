@@ -19,6 +19,9 @@ use Inertia\Inertia;
 Route::controller(UserController::class)
     ->group(function () {
         Route::get('/', 'api_getall')->name('api_getall');
+        Route::get('/student/class/{class}/room/{room}', 'api_getStudentFromClass')->name('api_getStudentFromClass');
+        Route::get('/student/name', 'api_getStudentName')->name('api_getStudentName');
+        Route::get('/student/class/{class}/room/{room}/name', 'api_getStudentNameFromClass')->name('api_getStudentNameFromClass');
         Route::get('/student', 'api_getStudent')->name('api_getStudent');
         Route::get('/teacher', 'api_getTeacher')->name('api_getTeacher');
         Route::get('/officer', 'api_getAdmin')->name('api_getAdmin');

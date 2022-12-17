@@ -26,7 +26,7 @@ return new class extends Migration
             $table->text('details');
             $table->boolean('approve')->nullable();
             $table->string('approve_by')->nullable();
-            $table->timestamp('approve_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('approve_at')->nullable();
             $table->string('created_by');
             $table->timestamps();
         });

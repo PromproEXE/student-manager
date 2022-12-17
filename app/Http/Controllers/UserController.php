@@ -22,6 +22,39 @@ class UserController extends Controller
         }
     }
 
+    public function api_getStudentFromClass($class, $room)
+    {
+        try {
+            return User::where('class', $class)
+                ->where('room', $room)
+                ->where('role', 'like', '%student%')
+                ->get();
+        } catch (Exception $err) {
+            return response($err, 403);
+        }
+    }
+
+    public function api_getStudentNameFromClass($class, $room)
+    {
+        try {
+            return User::where('class', $class)
+                ->where('room', $room)
+                ->where('role', 'like', '%student%')
+                ->get(['name', 'class', 'room']);
+        } catch (Exception $err) {
+            return response($err, 403);
+        }
+    }
+
+    public function api_getStudentName()
+    {
+        try {
+            return User::where('role', 'like', '%student%')->get(['name', 'class', 'room']);
+        } catch (Exception $err) {
+            return response($err, 403);
+        }
+    }
+
     public function api_getStudent()
     {
         try {
@@ -80,6 +113,7 @@ class UserController extends Controller
                         'birth_day' => $data['birth_day'],
                         'email' => $data['email'],
                         'password' => Hash::make($data['password']),
+                        'absent' => [],
                         'role' => $data['role'],
                     ]);
                 }
