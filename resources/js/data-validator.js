@@ -104,3 +104,35 @@ export function validateUser(data) {
 
     return status(message);
 }
+
+export function validateAbsent(data) {
+    let messageBag = {};
+
+    //ABSENT FROM
+    if (isEmpty(data.from)) {
+        messageBag.from = "วันลาตั้งแต่ไม่สามารถเว้นว่างได้";
+    } else if (isNaN(Date.parse(data.from))) {
+        messageBag.from = "วันลาตั้งแต่ไม่ถูกต้อง";
+    }
+
+    //ABSENT TO
+    if (isEmpty(data.to)) {
+        messageBag.to = "วันลาสิ้นสุดไม่สามารถเว้นว่างได้";
+    } else if (isNaN(Date.parse(data.to))) {
+        messageBag.to = "วันลาสิ้นสุดไม่ถูกต้อง";
+    } else if (new Date(data.from).getTime() < new Date(data.to).getTime()) {
+        messageBag.to = "วันลาสิ้นสุดไม่สามารถเป็นวันก่อนวันลาตั้งแต่ได้";
+    }
+
+    //ABSENT TYPE
+    if (isEmpty(data.type)) {
+        messageBag.type = "ประเภทการลาไม่สามารถเว้นว่างได้";
+    }
+
+    //ABSENT DETAILS
+    if (isEmpty(data.details)) {
+        messageBag.details = "รายละเอียดการลาไม่สามารถเว้นว่างได้";
+    }
+
+    return status(messageBag);
+}
