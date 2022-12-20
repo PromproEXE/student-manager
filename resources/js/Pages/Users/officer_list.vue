@@ -161,9 +161,7 @@ export default {
             this.deleteUserData = []
             this.selectedOfficer = []
             window.location.href = this.rootUrl
-        }
-    },
-    computed: {
+        },
         searchedData() {
             //SEARCH FILTER
             let data = this.officers
@@ -184,7 +182,7 @@ export default {
                 this.selectAll = false
             }
 
-            if (this.selectedOfficer.length == this.officers.length && this.officers.length != 0) {
+            if (this.selectedOfficer.length == this.searchedData().length && this.searchedData().length != 0) {
                 this.selectAll = true
             }
             else {
@@ -193,9 +191,9 @@ export default {
         },
         selectAll() {
             if (this.selectAll) {
-                this.selectedOfficer = this.officers
+                this.selectedOfficer = this.searchedData()
             }
-            else if (this.selectedOfficer.length == this.officers.length) {
+            else if (this.selectedOfficer.length == this.searchedData().length) {
                 this.selectedOfficer = []
             }
         }
@@ -257,7 +255,7 @@ export default {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover" v-for="officer in searchedData" :key="officer.id">
+                        <tr class="hover" v-for="officer in searchedData()" :key="officer.id">
                             <td class="text-center">
                                 <input type="checkbox" class="checkbox checkbox-sm" :value="officer"
                                     v-model="selectedOfficer">

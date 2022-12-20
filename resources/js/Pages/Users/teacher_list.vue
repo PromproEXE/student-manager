@@ -187,9 +187,7 @@ export default {
             this.deleteUserData = []
             this.selectedTeacher = []
             window.location.href = this.rootUrl
-        }
-    },
-    computed: {
+        },
         searchedData() {
             //SEARCH FILTER
             let data = this.teachers
@@ -220,7 +218,7 @@ export default {
                 this.selectAll = false
             }
 
-            if (this.selectedTeacher.length == this.teachers.length && this.teachers.length != 0) {
+            if (this.selectedTeacher.length == this.searchedData().length && this.searchedData().length != 0) {
                 this.selectAll = true
             }
             else {
@@ -229,9 +227,9 @@ export default {
         },
         selectAll() {
             if (this.selectAll) {
-                this.selectedTeacher = this.teachers
+                this.selectedTeacher = this.searchedData()
             }
-            else if (this.selectedTeacher.length == this.teachers.length) {
+            else if (this.selectedTeacher.length == this.searchedData().length) {
                 this.selectedTeacher = []
             }
         }
@@ -315,7 +313,7 @@ export default {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover" v-for="teacher in searchedData" :key="teacher.id">
+                        <tr class="hover" v-for="teacher in searchedData()" :key="teacher.id">
                             <td class="text-center">
                                 <input type="checkbox" class="checkbox checkbox-sm" :value="teacher"
                                     v-model="selectedTeacher">
@@ -585,7 +583,7 @@ export default {
                             <select id="edit-department" class="select text-xs select-sm select-bordered w-full mt-1"
                                 v-model="addUserData[0].data.department"
                                 :class="{ 'border-error': errorBag.message.department }">
-                                <option value="" disabled>--กลุ่มสาระการเรียนรู้--</option>
+                                <option :value="null" disabled>--กลุ่มสาระการเรียนรู้--</option>
                                 <option v-for="department in departments" :key="department" :value="department">{{
                                         department
                                 }}</option>

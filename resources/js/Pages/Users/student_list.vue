@@ -157,9 +157,7 @@ export default {
             this.deleteUserData = []
             this.selectedStudent = []
             window.location.href = this.rootUrl
-        }
-    },
-    computed: {
+        },
         searchedData() {
             //SEARCH FILTER
             let data = this.students
@@ -190,7 +188,7 @@ export default {
                 this.selectAll = false
             }
 
-            if (this.selectedStudent.length == this.students.length && this.students.length != 0) {
+            if (this.selectedStudent.length == this.searchedData().length && this.searchedData().length != 0) {
                 this.selectAll = true
             }
             else {
@@ -199,9 +197,9 @@ export default {
         },
         selectAll() {
             if (this.selectAll) {
-                this.selectedStudent = this.students
+                this.selectedStudent = this.searchedData()
             }
-            else if (this.selectedStudent.length == this.students.length) {
+            else if (this.selectedStudent.length == this.searchedData().length) {
                 this.selectedStudent = []
             }
         }
@@ -280,7 +278,7 @@ export default {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover" v-for="student in searchedData" :key="student.id">
+                        <tr class="hover" v-for="student in searchedData()" :key="student.id">
                             <td class="text-center">
                                 <input type="checkbox" class="checkbox checkbox-sm" :value="student"
                                     v-model="selectedStudent">
