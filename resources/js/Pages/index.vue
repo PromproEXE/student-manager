@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue';
-import SkeletonBar from '@/components/SkeletonBar.vue'
+import SkeletonBar from '@/Components/SkeletonBar.vue'
 import Chart from 'chart.js/auto';
 import { Head } from '@inertiajs/inertia-vue3';
 import { isAdmin, isStudent, isTeacher, isSystem } from '@/role'
