@@ -136,3 +136,72 @@ export function validateAbsent(data) {
 
     return status(messageBag);
 }
+
+export function validateTimetable(data) {
+    let message = {};
+    //TIMETABLE CLASS
+    if (isEmpty(data.class)) {
+        message.class = "ระดับชั้นไม่สามารถเว้นว่างได้";
+    } else if (isNaN(data.class) || data.class < 1 || data.class > 6) {
+        message.class = "ระดับชั้นไม่ถูกต้อง";
+    }
+
+    //TIMETABLE ROOM
+    if (isEmpty(data.room)) {
+        message.room = "ห้องไม่สามารถเว้นว่างได้";
+    } else if (isNaN(data.room) || data.room < 1) {
+        message.room = "ห้องไม่ถูกต้อง";
+    }
+
+    return status(message);
+}
+
+export function validateSubject(data) {
+    let message = {};
+
+    //CHECK SUBJECT ID
+    if (isEmpty(data.subject_id)) {
+        message.subject_id = "รหัสวิชาไม่สามารถเว้นว่างได้";
+    }
+
+    //CHECK SUBJECT NAME
+    if (isEmpty(data.name)) {
+        message.name = "ชื่อวิชาไม่สามารถเว้นว่างได้";
+    }
+
+    //CHECK TEACHER
+    if (!Array.isArray(data.teacher)) {
+        message.teacher = "ข้อมูลอาจารย์ผู้สอนไม่ถูกต้อง";
+    } else if (data.teacher.length == 0) {
+        message.teacher = "ข้อมูลอาจารย์ผู้สอนต้องมีอย่างน้อย 1 คน";
+    } else {
+        //LOOP FOR CHECK ITEM IN TEACHER ARRAY
+        for (let index in data.teacher) {
+            if (isEmpty(data.teacher[index])) {
+                message["teacher" + index] =
+                    "ชื่ออาจารย์ผู้สอนไม่สามารถเว้นว่างได้";
+            }
+        }
+    }
+
+    //CHECK FOR CLASS
+    if (!Array.isArray(data.for_class) || data.for_class.length != 6) {
+        message.for_class = "ข้อมูลระดับชั้นและห้องที่เปิดสอนไม่ถูกต้อง";
+    }
+    // else {
+    //     //LOOP FOR CHECK ITEM IN FOR_CLASS ARRAY
+    //     for (let index in data.for_class) {
+    //         if (isEmpty(data.teacher[index])) {
+    //             message["teacher" + (index + 1)] =
+    //                 "ชื่ออาจารย์ผู้สอนไม่สามารถเว้นว่างได้";
+    //         }
+    //     }
+    // }
+
+    //CHECK DEPARTMENT
+    if (isEmpty(data.department)) {
+        message.department = "กลุ่มสาระการเรียนรู้ไม่สามารถเว้นว่างได้";
+    }
+
+    return status(message);
+}

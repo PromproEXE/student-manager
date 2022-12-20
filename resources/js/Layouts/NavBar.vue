@@ -140,6 +140,7 @@ export default {
                             </a>
                             <ul class="p-2 bg-white drop-shadow-xl">
                                 <li><a :href="route('classroom_list_view')">จัดการห้องเรียน</a></li>
+                                <li><a :href="route('subject_list_view')">จัดการรายวิชา</a></li>
                                 <li><a :href="route('timetable_list_view')">จัดการตารางเรียน</a></li>
                             </ul>
                         </li>
@@ -154,9 +155,9 @@ export default {
                                 </svg>
                             </a>
                             <ul class="p-2 bg-white drop-shadow-xl">
-                                <li><a :href="route('users_student_list_view')">จัดการนักเรียน</a></li>
-                                <li><a :href="route('users_teacher_list_view')">จัดการอาจารย์</a></li>
-                                <li><a :href="route('users_officer_list_view')">จัดการเจ้าหน้าที่</a></li>
+                                <li><a :href="route('users_student_list_view')">จัดการรายชื่อนักเรียน</a></li>
+                                <li><a :href="route('users_teacher_list_view')">จัดการรายชื่ออาจารย์</a></li>
+                                <li><a :href="route('users_officer_list_view')">จัดการรายชื่อเจ้าหน้าที่</a></li>
                             </ul>
                         </li>
 

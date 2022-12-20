@@ -43,6 +43,7 @@ Route::middleware([
     Route::prefix('missing-items')->group(base_path('routes/frontend/missing-items.php'));
     Route::prefix('users')->group(base_path('routes/frontend/users.php'));
     Route::prefix('class')->group(base_path('routes/frontend/class.php'));
+    Route::prefix('subject')->group(base_path('routes/frontend/subject.php'));
 
 
     Route::get('/download/{fileName}', [FileController::class, 'getFile']);

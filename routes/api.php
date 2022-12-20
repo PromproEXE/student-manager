@@ -21,5 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::prefix('absent')->group(base_path('routes/api/absent.php'));
+    Route::prefix('classroom')->group(base_path('routes/api/classroom.php'));
+    Route::prefix('subject')->group(base_path('routes/api/subject.php'));
     Route::prefix('users')->group(base_path('routes/api/users.php'));
+    Route::prefix('timetable')->group(base_path('routes/api/timetable.php'));
 });
