@@ -267,7 +267,7 @@ export default {
             //FILTER ROOM
             if (this.filter.room != 'all' && this.filter.class == 'all') {
                 data = data.filter((data) => {
-                    let newArr = data.for_class.concat(data.for_class[0], data.for_class[1], data.for_class[2], data.for_class[3], data.for_class[4], data.for_class[5])
+                    let newArr = data.for_class[0].concat(data.for_class[1], data.for_class[2], data.for_class[3], data.for_class[4], data.for_class[5])
                     return newArr.indexOf(this.filter.room) > -1
                 })
             }
