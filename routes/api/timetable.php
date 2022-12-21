@@ -18,6 +18,12 @@ use Inertia\Inertia;
 
 Route::controller(TimetableController::class)
     ->group(function () {
-        Route::inertia('/', 'Timetable/list')->name('timetable_list_view');
-        Route::inertia('/edit', 'Timetable/edit')->name('timetable_edit_view');
+        Route::get('/', 'api_getall')->name('api_getall');
+        Route::get('/class/{class}/room/{room}', 'api_getTimetableFromClass')->name('api_getTimetableFromClass');
+
+        Route::post('/create', 'api_create')->name('api_create');
+
+        Route::put('/update/{id}', 'api_update')->name('api_update');
+
+        Route::delete('/delete/{id}', 'api_delete')->name('api_delete');
     });
