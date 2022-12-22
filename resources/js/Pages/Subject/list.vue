@@ -107,7 +107,7 @@ export default {
                 }
 
                 //CREATE TUPLE
-                let res = await axios.post('/api/subject/create/', this.addSubjectData)
+                let res = await axios.post('/api/subject/create', this.addSubjectData)
                 if (res.status == 200) {
                     alert('เพิ่มรายวิชาสำเร็จ')
 
