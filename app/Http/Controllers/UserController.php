@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Models\Timetable;
 use Exception;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -122,7 +124,7 @@ class UserController extends Controller
                     $data['password'] = 'kjn' . $data['std_id'];
 
                     //VALIDATE
-                    Validator::make($data, [
+                    $validated = Validator::make($data, [
                         'std_id' => ['required'],
                         'name' => ['required', 'string', 'max:255'],
                         'class' => ['required'],
@@ -143,6 +145,19 @@ class UserController extends Controller
                         'absent' => [],
                         'role' => $data['role'],
                     ]);
+
+                    //CREATE TIMETABLE
+                    $timetable = Timetable::where('class', $data['class'])->where('room', $data['room'])->get();
+                    if (count($timetable) === 0) {
+                        $timetableData = Timetable::create([
+                            'class' => $data['class'],
+                            'room' => $data['room'],
+                            'created_by' => Auth::user()->name,
+                            'updated_by' => Auth::user()->name,
+                            'data' => json_decode('{}'),
+
+                        ]);
+                    }
                 }
                 //TEACHER
                 else if (array_search('teacher', $data['role']) !== false) {
@@ -151,7 +166,7 @@ class UserController extends Controller
                     $data['password'] = 'kjn' . strtolower(explode(' ', $data['eng_name'])[0]);
 
                     //VALIDATE
-                    Validator::make($data, [
+                    $validated = Validator::make($data, [
                         'name' => ['required', 'string', 'max:255'],
                         'eng_name' => ['required', 'string', 'max:255'],
                         'class' => ['required'],
@@ -177,7 +192,7 @@ class UserController extends Controller
                     $data['password'] = 'kjn' . strtolower(explode(' ', $data['eng_name'])[0]);
 
                     //VALIDATE
-                    Validator::make($data, [
+                    $validated = Validator::make($data, [
                         'name' => ['required', 'string', 'max:255'],
                         'eng_name' => ['required', 'string', 'max:255'],
                         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -205,7 +220,7 @@ class UserController extends Controller
     {
         try {
             if (array_search('student', $request['role']) !== false) {
-                Validator::make($request->all(), [
+                $validated = $request->validate([
                     'id' => ['required', 'unique:users'],
                     'std_id' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
@@ -215,7 +230,7 @@ class UserController extends Controller
                     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 ]);
             } else if (array_search('teacher', $request['role']) !== false) {
-                Validator::make($request->all(), [
+                $validated = $request->validate([
                     'id' => ['required', 'unique:users'],
                     'name' => ['required', 'string', 'max:255'],
                     'eng_name' => ['required', 'string', 'max:255'],
@@ -224,7 +239,7 @@ class UserController extends Controller
                     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 ]);
             } else if (array_search('admin', $request['role']) !== false) {
-                Validator::make($request->all(), [
+                $validated = $request->validate([
                     'id' => ['required', 'unique:users'],
                     'name' => ['required', 'string', 'max:255'],
                     'eng_name' => ['required', 'string', 'max:255'],
@@ -237,21 +252,6 @@ class UserController extends Controller
             return response($err, 403);
         }
     }
-
-    // public function api_delete(Request $request)
-    // {
-    //     try {
-    //         $deleteData = [];
-    //         dd($request->all());
-    //         foreach ($request->all() as $data) {
-    //             $deleteUser = User::destroy($data['id']);
-    //             array_push($deleteData, $deleteUser);
-    //         }
-    //         return $deleteData;
-    //     } catch (Exception $err) {
-    //         return response($err, 403);
-    //     }
-    // }
 
     public function api_delete($id)
     {

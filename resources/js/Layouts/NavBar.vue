@@ -166,8 +166,8 @@ export default {
                                     device_unknown
                                 </span>จัดการของหาย</a></li>
                     </template>
-                    <li class="rounded-xl text-xl"><a :href="route('missing_items_list_view')"><span
-                                class="material-symbols-rounded">
+                    <li class="rounded-xl text-xl" v-if="!isAdmin($page.props.user.role)"><a
+                            :href="route('missing_items_list_view')"><span class="material-symbols-rounded">
                                 device_unknown
                             </span>แจ้งของหาย</a></li>
                 </ul>

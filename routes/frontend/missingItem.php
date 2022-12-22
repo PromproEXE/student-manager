@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AbsentController;
+use App\Http\Controllers\MissingItemController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,7 +16,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::controller(AbsentController::class)
+Route::controller(MissingItemController::class)
     ->group(function () {
         Route::inertia('/', 'Missing-items/list')->name('missing_items_list_view');
         Route::inertia('/edit', 'Missing-items/edit')->name('missing_items_edit_view');

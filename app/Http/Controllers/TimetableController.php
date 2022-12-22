@@ -23,7 +23,7 @@ class TimetableController extends Controller
     public function api_getTimetableFromClass($class, $room)
     {
         try {
-            return Timetable::where('class', $class)->where('room', $room)->first();
+            return [Timetable::where('class', $class)->where('room', $room)->first()];
         } catch (Exception $err) {
             return response($err, 403);
         }
