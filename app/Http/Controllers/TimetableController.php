@@ -23,7 +23,23 @@ class TimetableController extends Controller
     public function api_getTimetableFromClass($class, $room)
     {
         try {
-            return [Timetable::where('class', $class)->where('room', $room)->first()];
+            return Timetable::where('class', $class)->where('room', $room)->get();
+        } catch (Exception $err) {
+            return response($err, 403);
+        }
+    }
+
+    public function api_todayClassCount()
+    {
+        try {
+            $timetable = Timetable::where('class', Auth::user()->class)->where('room', Auth::user()->room);
+            $dayOfWeek = date('w');
+
+            if ($dayOfWeek > 0 && $dayOfWeek < 5) {
+                return count($timetable->filter(fn ($item) => $item['data']['2022']['2'][$dayOfWeek]['type'] == 'study')) + 1;
+            } else {
+                return 0;
+            }
         } catch (Exception $err) {
             return response($err, 403);
         }

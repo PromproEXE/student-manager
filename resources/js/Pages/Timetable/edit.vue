@@ -44,7 +44,7 @@ export default {
             try {
                 let res = await axios('/api/timetable/class/' + this.classes + '/room/' + this.room)
                 if (res.status == 200) {
-                    this.timetable = res.data
+                    this.timetable = res.data[0]
                     this.processTimetable()
                     this.timetable_temp = cloneDeep(this.timetable)
                     this.loading = false
@@ -69,7 +69,7 @@ export default {
         },
         async getRoomAmount() {
             try {
-                let res = await axios('/api/classroom/room-amount')
+                let res = await axios('/api/classroom/room/amount')
                 if (res.status == 200) {
                     this.roomAmount = res.data
                 }

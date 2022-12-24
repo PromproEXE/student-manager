@@ -20,6 +20,7 @@ Route::controller(TimetableController::class)
     ->group(function () {
         Route::get('/', 'api_getall')->name('api_getall');
         Route::get('/class/{class}/room/{room}', 'api_getTimetableFromClass')->name('api_getTimetableFromClass');
+        Route::get('/today-class/count', 'api_todayClassCount')->name('api_todayClassCount');
 
         Route::post('/create', 'api_create')->name('api_create');
 
