@@ -42,7 +42,6 @@ Route::middleware([
     Route::prefix('grade')->group(base_path('routes/frontend/dooGrade.php'));
     Route::prefix('missing-items')->group(base_path('routes/frontend/missingItem.php'));
     Route::prefix('users')->group(base_path('routes/frontend/users.php'));
-    Route::prefix('class')->group(base_path('routes/frontend/class.php'));
     Route::prefix('subject')->group(base_path('routes/frontend/subject.php'));
 
 

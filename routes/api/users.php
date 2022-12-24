@@ -25,6 +25,7 @@ Route::controller(UserController::class)
         Route::get('/student', 'api_getStudent')->name('api_getStudent');
         Route::get('/student/count', 'api_countStudent')->name('api_countStudent');
         Route::get('/teacher', 'api_getTeacher')->name('api_getTeacher');
+        Route::get('/teacher/simple', 'api_getTeacherSimple')->name('api_getTeacherSimple');
         Route::get('/teacher/count', 'api_countTeacher')->name('api_countTeacher');
         Route::get('/officer', 'api_getAdmin')->name('api_getAdmin');
         Route::get('/officer/count', 'api_countAdmin')->name('api_countOfficer');

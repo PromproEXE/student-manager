@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\HomeworkController;
+use App\Http\Controllers\ClassroomController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,7 +16,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::controller(HomeworkController::class)
+Route::controller(ClassroomController::class)
     ->group(function () {
         Route::inertia('/', 'Classroom/list')->name('classroom_list_view');
         Route::inertia('/room', 'Classroom/room')->name('classroom_room_view');

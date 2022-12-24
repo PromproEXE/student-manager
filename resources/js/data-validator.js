@@ -205,3 +205,14 @@ export function validateSubject(data) {
 
     return status(message);
 }
+
+export function validatePost(data) {
+    let message = {};
+
+    //CHECK TITLE
+    if (isEmpty(data.title)) {
+        message.title = "หัวข้อไม่สามารถเว้นว่างได้";
+    }
+
+    return status(message);
+}

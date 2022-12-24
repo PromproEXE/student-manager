@@ -25,23 +25,6 @@ export default {
                             <p class="text-3xl font-bold">{{ title }}</p>
                             <button class="btn btn-warning text-lg">ประกาศ</button>
                         </div>
-                        <!-- <div>
-                            <div class="btn-group">
-                                <button class="btn btn-success">มอบหมายงาน</button>
-                                <div class="dropdown">
-                                    <label tabindex="0" class="btn btn-success px-1"
-                                        style="border-radius: 0px 0.5rem 0.5rem 0px !important;"><span
-                                            class="material-symbols-rounded">
-                                            expand_more
-                                        </span></label>
-                                    <ul tabindex="0"
-                                        class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                                        <li><a>Item 1</a></li>
-                                        <li><a>Item 2</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                     <div class="rounded-xl bg-white p-5 mb-5">
                         <label for="" class="text-gray-500">
