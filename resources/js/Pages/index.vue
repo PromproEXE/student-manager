@@ -15,6 +15,7 @@ export default {
             student_amount: -1,
             teacher_amount: -1,
             officer_amount: -1,
+            todayClass: -1,
         }
     },
     methods: {
@@ -41,6 +42,18 @@ export default {
             }
             catch (err) {
                 alert('เกิดปัญหาระหว่างดึงจำนวนผู้ใช้')
+                console.log(err)
+            }
+        },
+        async getTodayClass() {
+            try {
+                let res = await axios('/api/timetable/today-class/count')
+                if (res.status == 200) {
+                    this.todayClass = res.data
+                }
+            }
+            catch (err) {
+                alert('เกิดปัญหาระหว่างดึงข้อมูลตารางเรียน')
                 console.log(err)
             }
         },
@@ -145,7 +158,13 @@ export default {
         }
     },
     mounted() {
-        // this.initChart()
+        if (!isAdmin(Inertia.page.props.user.role)) {
+            this.initChart()
+        }
+
+        if (isStudent(Inertia.page.props.user.role)) {
+            this.getTodayClass()
+        }
 
         if (isAdmin(Inertia.page.props.user.role)) {
             this.getUserAmount()
@@ -198,15 +217,16 @@ export default {
                                     google_plus_reshare
                                 </span>
                             </p>
-                            <p class="text-4xl font-bold">2 งาน</p>
+                            <p class="text-4xl font-bold">0 งาน</p>
                         </div>
                         <div class="bg-amber-200 text-amber-600 rounded-lg p-3 px-5">
                             <p class="text-xl font-bold mb-3">การบ้านที่ต้องส่งพรุ่งนี้</p>
-                            <p class="text-4xl font-bold">3 งาน</p>
+                            <p class="text-4xl font-bold">0 งาน</p>
                         </div>
                         <div class="bg-sky-200 text-sky-600 rounded-lg p-3 px-5">
                             <p class="text-xl font-bold mb-3">วันนี้เรียนทั้งหมด</p>
-                            <p class="text-4xl font-bold">5 คาบ</p>
+                            <p class="text-4xl font-bold" v-if="todayClass > -1">{{ todayClass }} คาบ</p>
+                            <SkeletonBar bg="bg-sky-600" class="w-1/2 h-8" v-else></SkeletonBar>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-5">

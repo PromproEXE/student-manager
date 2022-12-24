@@ -140,10 +140,11 @@ export default {
                     <a :href="'#img-' + item.id + '-' + i" class="btn btn-xs btn-circle btn-secondary"
                         v-for="(img, i) in item.img" :key="'img-' + item.id + '-' + i + '-control'">{{ i + 1 }}</a>
                 </div>
-                <a href="#found-modal" role="button" v-if="isAdmin($page.props.user.role)" :disabled="item.found"
+                <a href="#found-modal" role="button" v-if="isAdmin($page.props.user.role) && !item.found"
                     @click="selectItem(item)">
-                    <button class="btn btn-sm btn-success w-full text-lg" :disabled="item.found">พบเจ้าของแล้ว</button>
+                    <button class="btn btn-sm btn-success w-full text-lg">พบเจ้าของแล้ว</button>
                 </a>
+                <button class="btn btn-sm btn-success w-full text-lg" disabled v-else>พบเจ้าของแล้ว</button>
             </div>
         </div>
 

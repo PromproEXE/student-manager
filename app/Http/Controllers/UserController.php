@@ -75,6 +75,15 @@ class UserController extends Controller
         }
     }
 
+    public function api_getTeacherSimple()
+    {
+        try {
+            return User::where('role', 'like', '%teacher%')->get(['id', 'name']);
+        } catch (Exception $err) {
+            return response($err, 403);
+        }
+    }
+
     public function api_getAdmin()
     {
         try {
@@ -144,6 +153,7 @@ class UserController extends Controller
                         'password' => Hash::make($data['password']),
                         'absent' => [],
                         'role' => $data['role'],
+                        'classroom' => []
                     ]);
 
                     //CREATE TIMETABLE
@@ -221,29 +231,25 @@ class UserController extends Controller
         try {
             if (array_search('student', $request['role']) !== false) {
                 $validated = $request->validate([
-                    'id' => ['required', 'unique:users'],
                     'std_id' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
                     'class' => ['required'],
                     'room' => ['required'],
-                    'birth_day' => ['required'],
-                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'email' => ['required', 'string', 'email', 'max:255'],
                 ]);
             } else if (array_search('teacher', $request['role']) !== false) {
                 $validated = $request->validate([
-                    'id' => ['required', 'unique:users'],
                     'name' => ['required', 'string', 'max:255'],
                     'eng_name' => ['required', 'string', 'max:255'],
                     'data' => ['required'],
                     'class' => ['required'],
-                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'email' => ['required', 'string', 'email', 'max:255'],
                 ]);
             } else if (array_search('admin', $request['role']) !== false) {
                 $validated = $request->validate([
-                    'id' => ['required', 'unique:users'],
                     'name' => ['required', 'string', 'max:255'],
                     'eng_name' => ['required', 'string', 'max:255'],
-                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'email' => ['required', 'string', 'email', 'max:255'],
                 ]);
             }
             $user = User::where('id', $id)->first()->update($request->all());
