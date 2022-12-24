@@ -19,6 +19,8 @@ use Inertia\Inertia;
 Route::controller(SubjectController::class)
     ->group(function () {
         Route::get('/', 'api_getSubject')->name('api_getSubject');
+        Route::get('/teacher/{teacher}', 'api_getSubjectByTeacher')->name('api_getSubjectByTeacher');
+
 
         Route::post('/create', 'api_create')->name('api_create');
 

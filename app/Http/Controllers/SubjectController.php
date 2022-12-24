@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classroom;
 use Exception;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -14,6 +15,29 @@ class SubjectController extends Controller
     {
         try {
             return Subject::all();
+        } catch (Exception $err) {
+            return response($err, 403);
+        }
+    }
+
+    public function api_getSubjectByTeacher($teacher)
+    {
+        function textToUTF($text)
+        {
+            $str = bin2hex(iconv('UTF-8', 'UTF-16BE', $text));
+            $var = str_split($str, 4);
+            foreach ($var as &$ch) {
+                $ch = '\u' . $ch;
+            }
+            return implode("", $var);
+        }
+
+        try {
+            $name_split = explode('-', $teacher);
+            $teacher_name = $name_split[0] . ' ' . $name_split[1];
+            $data = Subject::all();
+
+            return $data->filter(fn ($item) => array_search($teacher_name, $item['teacher']) !== false);
         } catch (Exception $err) {
             return response($err, 403);
         }
@@ -60,10 +84,23 @@ class SubjectController extends Controller
                 'teacher' => ['required', 'array']
             ]);
 
-            //CREATE
-            $subject = Subject::find($id);
+            //UPDATE
             $request['updated_by'] = Auth::user()->name;
-            return $subject->update($request->all());
+            $subject = Subject::updateOrCreate(['id' => $request['id']], $request->all());
+
+            //UPDATE CLASSROOM
+            $classroom = Classroom::where('class_id', $subject['subject_id'])->first();
+            if ($classroom != null) {
+                $classroom->update([
+                    'class_id' => $subject['subject_id'],
+                    'name' => $subject['name'],
+                    'for_class' => $subject['for_class'],
+                    'teacher' => $subject['teacher'],
+                    'department' => $subject['department'],
+                    'updated_by' => Auth::user()->name,
+                ]);
+            }
+            return [$subject, $classroom];
         } catch (Exception $err) {
             return response($err, 403);
         }

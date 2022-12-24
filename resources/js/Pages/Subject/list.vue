@@ -18,6 +18,7 @@ export default {
             },
             subjects: [],
             roomAmount: [],
+            teachers: [],
             addSubjectData: [],
             deleteSubjectData: [],
             editSubjectData: {},
@@ -35,9 +36,37 @@ export default {
         }
     },
     methods: {
+        async getTeacherData() {
+            try {
+                let res = await axios('/api/users/teacher/simple')
+                if (res.status == 200) {
+                    this.teachers = res.data
+                }
+            }
+            catch (err) {
+                alert('เกิดปัญหาระหว่างดึงข้อมูลอาจารย์')
+            }
+        },
+        getTeacherDropdownData() {
+            let dropdownData = []
+            for (let teacher of this.teachers) {
+                dropdownData.push({
+                    label: teacher.name,
+                    value: teacher.name
+                })
+            }
+            return dropdownData
+        },
+        changeTeacherData(target, teacher_i, teacher_data) {
+            console.log(target)
+            console.log(teacher_i)
+            console.log(teacher_data)
+            target.teacher[teacher_i] = teacher_data.name
+            target.teacher_id[teacher_i] = teacher_data.id
+        },
         async getRoomAmount() {
             try {
-                let res = await axios('/api/classroom/room-amount')
+                let res = await axios('/api/classroom/room/amount/')
                 if (res.status == 200) {
                     if (Array.isArray(res.data) && res.data.length == 6) {
                         this.roomAmount = res.data
@@ -326,6 +355,7 @@ export default {
     },
     mounted() {
         this.getRoomAmount()
+        this.getTeacherData()
         this.getSubject()
     }
 }
@@ -485,7 +515,7 @@ export default {
                 <form @submit.prevent="addSubject()">
                     <div class="flex justify-between items-center mb-3">
                         <div class="flex">
-                            <a href="#add-modal" role="button"
+                            <a href="#add-modal" role="button" @click="addSubjectData = []"
                                 class="btn btn-sm text-primary hover:bg-transparent hover:border hover:border-b-2 text-xl btn-ghost mr-3">
                                 <span class="material-symbols-rounded">
                                     arrow_back
@@ -551,7 +581,7 @@ export default {
                 <div class="modal-box w-full max-w-5xl">
                     <div class="flex justify-between items-center mb-3">
                         <div class="flex">
-                            <a href="#add-modal" role="button"
+                            <a href="#add-modal" role="button" @click="addSubjectData = []"
                                 class="btn btn-sm text-primary hover:bg-transparent hover:border hover:border-b-2 text-xl btn-ghost mr-3">
                                 <span class="material-symbols-rounded">
                                     arrow_back
@@ -619,10 +649,16 @@ export default {
                                         {{ i
                                                 + 1
                                         }}</label>
-                                    <input type="text" :id="'edit-teacher-' + i"
+                                    <!-- <input type="text" :id="'edit-teacher-' + i"
                                         class="input input-sm input-bordered mb-0"
+                                        v-model="addSubjectData[0].teacher[i]"
                                         :class="{ 'border-error': errorBag.message.subject_id }"
-                                        placeholder="ชื่ออาจารย์" v-model="addSubjectData[0].teacher[i]">
+                                        placeholder="ชื่ออาจารย์"> -->
+
+                                    <Multiselect placeholder="ชื่ออาจารย์" :id="'edit-teacher-' + i"
+                                        :close-on-select="true" :searchable="true" :options="getTeacherDropdownData()"
+                                        :class="{ 'border-error': errorBag.message.subject_id }"
+                                        v-model="addSubjectData[0].teacher[i]" />
                                 </div>
                                 <small class="text-error mt-1" v-if="errorBag.message['teacher' + i]">{{
                                         errorBag.message['teacher' + i]
@@ -735,10 +771,15 @@ export default {
                                         {{ i
                                                 + 1
                                         }}</label>
-                                    <input type="text" :id="'edit-teacher-' + i"
+                                    <!-- <input type="text" :id="'edit-teacher-' + i"
                                         class="input input-sm input-bordered mb-0"
                                         :class="{ 'border-error': errorBag.message.subject_id }"
-                                        placeholder="ชื่ออาจารย์" v-model="editSubjectData.teacher[i]">
+                                        placeholder="ชื่ออาจารย์" v-model="editSubjectData.teacher[i]"> -->
+
+                                    <Multiselect placeholder="ชื่ออาจารย์" :id="'edit-teacher-' + i"
+                                        :close-on-select="true" :searchable="true" :options="getTeacherDropdownData()"
+                                        :class="{ 'border-error': errorBag.message.subject_id }"
+                                        v-model="editSubjectData.teacher[i]" />
                                 </div>
                                 <small class="text-error mt-1" v-if="errorBag.message['teacher' + i]">{{
                                         errorBag.message['teacher' + i]
