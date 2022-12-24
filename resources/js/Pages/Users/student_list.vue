@@ -415,7 +415,7 @@ export default {
                 <form @submit.prevent="addUser()">
                     <div class="flex justify-between items-center mb-3">
                         <div class="flex">
-                            <a href="#add-modal" role="button"
+                            <a href="#add-modal" role="button" @click="addUserData = []"
                                 class="btn btn-sm text-primary hover:bg-transparent hover:border hover:border-b-2 text-xl btn-ghost mr-3">
                                 <span class="material-symbols-rounded">
                                     arrow_back
@@ -480,7 +480,7 @@ export default {
                 <div class="modal-box w-full max-w-5xl">
                     <div class="flex justify-between items-center mb-3">
                         <div class="flex">
-                            <a href="#add-modal" role="button"
+                            <a href="#add-modal" role="button" @click="addUserData = []"
                                 class="btn btn-sm text-primary hover:bg-transparent hover:border hover:border-b-2 text-xl btn-ghost mr-3">
                                 <span class="material-symbols-rounded">
                                     arrow_back
